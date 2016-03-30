@@ -1,8 +1,11 @@
 # CoffeeMachineProject
 <h3>
 	Jura coffee machine upgraded with a raspberry pi, running a Kivy app for customers management.
-	In order to interface the raspberry with the coffee machine, we replaced button to order coffee by optocouplers, linked with the GPIO of the raspberry pi.
 </h3>
+
+<p>
+In order to interface the raspberry with the coffee machine, we replaced button to order coffee by optocouplers, linked with the GPIO of the raspberry pi.
+</p>
 
 <p>
 	<li>As it is a Kivy application, the visual of any screen is descripted in the file named coffeemachine.kv.</li>

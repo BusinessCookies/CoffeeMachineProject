@@ -1,6 +1,7 @@
 # CoffeeMachineProject
 <h3>
 	Jura coffee machine upgraded with a raspberry pi, running a Kivy app for customers management.
+	In order to interface the raspberry with the coffee machine, we replaced button to order coffee by optocouplers, linked with the GPIO of the raspberry pi.
 </h3>
 
 <p>
@@ -33,9 +34,8 @@ In order to boot directly on the Kivy app, we used a Daemon, following this tuto
 <p>
 	List of electronical parts:
 	<li>Touchscreen : https://www.element14.com/community/docs/DOC-78156/l/raspberry-pi-7-touchscreen-display</li>
-	<li></li>
-	<li></li>
-	<li></li>
-	<li></li>
-	<li></li>
+	<li>Power supply: 5V/4A </li>
+	<li>edimax ew-7811un : http://www.edimax.com/edimax/merchandise/merchandise_detail/data/edimax/global/wireless_adapters_n150/ew-7811un</li>
+	<li>Adafruit Prototyping Pi Plate Kit: https://www.adafruit.com/products/801</li>
+
 </p>

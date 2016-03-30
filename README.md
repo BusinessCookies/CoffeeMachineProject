@@ -3,7 +3,7 @@ Jura coffee machine upgraded with a raspberry pi, running a Kivy app for custome
 
 
 
-![ScreenShot](https://raw.github.com/CoffeeMCorp/CoffeeMachineProject/tree/master/Data/ImgReadMe/IMG_1636.JPG?raw=true )
+![ScreenShot](https://raw.githubusercontent.com/CoffeeMCorp/CoffeeMachineProject/tree/master/Data/ImgReadMe/IMG_1636.JPG?raw=true )
 
 
 <p align="center">

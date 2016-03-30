@@ -38,7 +38,7 @@ In order to boot directly on the Kivy app, we used a Daemon, following this tuto
 	List of electronical parts:
 	<li>Touchscreen : https://www.element14.com/community/docs/DOC-78156/l/raspberry-pi-7-touchscreen-display</li>
 	<li>Power supply: 5V/4A </li>
-	<li>edimax ew-7811un : http://www.edimax.com/edimax/merchandise/merchandise_detail/data/edimax/global/wireless_adapters_n150/ew-7811un</li>
+	<li>WLAN : http://www.edimax.com/edimax/merchandise/merchandise_detail/data/edimax/global/wireless_adapters_n150/ew-7811un</li>
 	<li>Adafruit Prototyping Pi Plate Kit: https://www.adafruit.com/products/801</li>
 
 </p>

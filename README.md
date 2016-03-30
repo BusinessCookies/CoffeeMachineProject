@@ -18,5 +18,5 @@ You will find below more information about different configurations we had to do
 
 In order to boot directly on the Kivy app, we used a Daemon, following this tutorial:
 
-http://www.stuffaboutcode.com/2012/06/raspberry-pi-run-program-at-startup.html
+http://www.stuffaboutcode.com/2012/06/raspberry-pi-run-program-at-start-up.html
 

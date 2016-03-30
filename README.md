@@ -10,7 +10,7 @@
 
 	<li>As we had duplicates when writing in databases with python on the raspberry, we had to rewrite CSV parser</li>
 </p>
-You will find below more information about different configurations we had to do on the raspberry and tutorials we used.
+You will find below every link we used in order to configurate raspbian and Kivy and the list of electronical part that we used for this project.
 
 Here are a few picture of the coffee machine working :
 
@@ -23,10 +23,19 @@ Here are a few picture of the coffee machine working :
 ![ScreenShot](/Data/ImgReadMe/IMG_1639.JPG?raw=true )
 
 <p>
-To install Kivy on raspbian and to get started with Kivy: 
+	To install Kivy on raspbian and to get started with Kivy: 
 	https://github.com/mrichardson23/rpi-kivy-screen
 </p>
 <p>
 In order to boot directly on the Kivy app, we used a Daemon, following this tutorial:
 	http://www.stuffaboutcode.com/2012/06/raspberry-pi-run-program-at-start-up.html
+</p>
+<p>
+	List of electronical parts:
+	<li>Touchscreen : https://www.element14.com/community/docs/DOC-78156/l/raspberry-pi-7-touchscreen-display</li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
 </p>

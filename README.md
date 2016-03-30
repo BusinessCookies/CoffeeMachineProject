@@ -18,6 +18,6 @@
 <p>
 	In order to boot directly on the Kivy app, we used a Daemon, following this tutorial:
 	<li>
-		<href="http://www.stuffaboutcode.com/2012/06/raspberry-pi-run-program-at-startup.html"/>
+		<a href="http://www.stuffaboutcode.com/2012/06/raspberry-pi-run-program-at-startup.html"/a>
 	</li>
 </p>

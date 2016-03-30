@@ -13,6 +13,12 @@ In order to interface the raspberry with the coffee machine, we replaced button 
 	<li>Our databases are stored in .CSV files, so CSV.py contains functions that read those files and change them locally.</li>
 
 	<li>As we had duplicates when writing in databases with python on the raspberry, we had to rewrite CSV parser</li>
+	
+	<li>FoncGPIO.py configures the GPIO, and contains all the functions that simulate coffee machine's buttons. </li>
+	
+	<li>Every 20 minutes, the main call update_network.sh to test the connection, and if the connection is good, this script calls updateDB.py that update the admin.csv database </li>
+	
+	<li>The file otherclasses.py contains classes used by the main program.</li<
 </p>
 You will find below every link we used in order to configurate raspbian and Kivy and the list of electronical part that we used for this project.
 

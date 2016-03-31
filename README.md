@@ -8,7 +8,7 @@
 		"App" directory contains every file that runs locally on the raspberry
 	</li>
 	<li>
-		"Server" directory where the website part is stored. It handle databases, customers management, and data analysis
+		"Server" directory where the website part is stored. It handle databases, customers management, and data analysis (not uploaded yet)
 </p>
 <h3>Raspberry part:</h3>
 <p>

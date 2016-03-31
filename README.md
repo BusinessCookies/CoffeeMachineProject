@@ -2,9 +2,17 @@
 <h3>
 	Jura coffee machine upgraded with a raspberry pi, running a Kivy app for customers management.
 </h3>
-
 <p>
-In order to interface the raspberry with the coffee machine, we replaced button to order coffee by optocouplers, linked with the GPIO of the raspberry pi.
+	You'll find two different directories in this project:
+	<li>
+		"App" directory contains every file that runs locally on the raspberry
+	</li>
+	<li>
+		"Server" directory where the website part is stored. It handle databases, customers management, and data analysis
+</p>
+<h3>Raspberry part:</h3>
+<p>
+	In order to interface the raspberry with the coffee machine, we replaced button to order coffee by optocouplers, linked 	with the GPIO of the raspberry pi.
 </p>
 
 <p>

@@ -24,13 +24,13 @@ You will find below every link we used in order to configurate raspbian and Kivy
 
 Here are a few picture of the coffee machine working :
 
-![ScreenShot](/Data/ImgReadMe/IMG_1636.JPG?raw=true )
+![ScreenShot](/App/Data/ImgReadMe/IMG_1636.JPG?raw=true )
 
-![ScreenShot](/Data/ImgReadMe/IMG_1637.JPG?raw=true )
+![ScreenShot](/App/Data/ImgReadMe/IMG_1637.JPG?raw=true )
 
-![ScreenShot](/Data/ImgReadMe/IMG_1638.JPG?raw=true )
+![ScreenShot](/App/Data/ImgReadMe/IMG_1638.JPG?raw=true )
 
-![ScreenShot](/Data/ImgReadMe/IMG_1639.JPG?raw=true )
+![ScreenShot](/App/Data/ImgReadMe/IMG_1639.JPG?raw=true )
 
 <p>
 	To install Kivy on raspbian and to get started with Kivy: 

@@ -2,11 +2,7 @@ import CSVParser
 import os
 
 
-<<<<<<< HEAD
 path = "/home/coffee/Documents/Kivy/CoffeeMProject/PinLoginVersion2/App/Data/DB/"
-=======
-path = "/home/coffee/Documents/Kivy/CoffeeMProject/PinLoginVersion2/Data/DB/"
->>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
 ######### This file is used to modify localy the information of the different CSV files###################### 
 class Users:
     def __init__(self):

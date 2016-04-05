@@ -11,13 +11,10 @@
                 text:self.text
                 font_size: 60
                 #pos_hint:{'x':0 , 'y':0.25}
-<<<<<<< HEAD
             UpdatedLabel: 
                 text:self.text
-=======
             Label: 
-                text:'Please make sure the coffee machine\nis ready to make a coffee\nbefore ordering it'
->>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
+                text:self.text
                 font_size: 25
                 halign: 'center'
             PinLabel:
@@ -68,14 +65,11 @@
                 spacing: 10
                 padding: 10
                 cols:3
-<<<<<<< HEAD
                 Button:
-	                text: 'Update'
-	                on_press:root.do_action("update")
-=======
+                    text: 'Update'
+                    on_press:root.do_action("update")
                 Label:
-	                text: '  '
->>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
+                    text: '  '
                 Button:
                     text: "0"
                     on_press: root.do_action("0")
@@ -121,81 +115,81 @@
                 text:self.text
                 font_size: 25
 
-		GridLayout:
-			size_hint_y: 0.3
+        GridLayout:
+            size_hint_y: 0.3
             pos_hint:{'x':0,'top':0.9}
             spacing: 20
             padding: 40
             cols: 2
             Button:
-	            text: 'Expresso'
-	            on_press: root.do_action('Expresso',0,0)
-	            on_release: app.root.current='third'
-	        Button: 
-	            text: 'Double Expresso'
-	            on_press: root.do_action('Double Expresso',0,0)
+                text: 'Expresso'
+                on_press: root.do_action('Expresso',0,0)
                 on_release: app.root.current='third'
-	            #size_hint_y: 1
-	        Button: 
-	            text: 'Coffee'
-	            on_press: root.do_action('Coffee',0,0)
+            Button: 
+                text: 'Double Expresso'
+                on_press: root.do_action('Double Expresso',0,0)
                 on_release: app.root.current='third'
-	            #size_hint_y: 1
-	        Button: 
-	            text: 'Double Coffee'
-	            on_press: root.do_action('Double Coffee',0,0)
+                #size_hint_y: 1
+            Button: 
+                text: 'Coffee'
+                on_press: root.do_action('Coffee',0,0)
                 on_release: app.root.current='third'
-	    Monney:
-		    pos_hint:{'x':0,'top':0.6}
-		    size_hint_y:0.2
-	        id:AmountOfMoney
-	        font_size: 35
-	        halign:"center"
+                #size_hint_y: 1
+            Button: 
+                text: 'Double Coffee'
+                on_press: root.do_action('Double Coffee',0,0)
+                on_release: app.root.current='third'
+        Monney:
+            pos_hint:{'x':0,'top':0.6}
+            size_hint_y:0.2
+            id:AmountOfMoney
+            font_size: 35
+            halign:"center"
 
-	    BoxLayout:
-		    pos_hint:{'x':0,'top':0.4}
-	        size_hint_y:0.4
-	        orientation: 'vertical'
-	        canvas.before:
-	            Color:
-	                rgba: (0.4,0.45,0.4,0.40)
-	            Rectangle:
-	                pos: self.pos
-	                size: self.size
-	        padding:15
-	        spacing:40
-			Label:
-				pos_hint:{'x':0,'y':0.45}
-		        text:'Set MyCoffee :'
-				font_size: 23
-	        BoxLayout:
-	            orientation:'horizontal'
-	            Beans_slider:
-		            size_hint_x:0.8
-	                id:slider_beans
-	                min: 1
-	                max: 5
-	                step: 1
-	                on_touch_down:root.update_beans(self.value)
-	                on_touch_move:root.update_beans(self.value)
-	            Label:
-			        text: '%s /5' % int(slider_beans.value)
-	                size_hint_x:0.2
-	        BoxLayout:
-	            orientation:'horizontal'
-	            Water_slider:
-	                id: slider_quantity
-	                min: 70
-	                max: 240
-	                step: 5
-	                on_touch_down:root.update_water(self.value)
-	                on_touch_move:root.update_water(self.value)
+        BoxLayout:
+            pos_hint:{'x':0,'top':0.4}
+            size_hint_y:0.4
+            orientation: 'vertical'
+            canvas.before:
+                Color:
+                    rgba: (0.4,0.45,0.4,0.40)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            padding:15
+            spacing:40
+            Label:
+                pos_hint:{'x':0,'y':0.45}
+                text:'Set MyCoffee :'
+                font_size: 23
+            BoxLayout:
+                orientation:'horizontal'
+                Beans_slider:
+                size_hint_x:0.8
+                    id:slider_beans
+                    min: 1
+                    max: 5
+                    step: 1
+                    on_touch_down:root.update_beans(self.value)
+                    on_touch_move:root.update_beans(self.value)
+                Label:
+                    text: '%s /5' % int(slider_beans.value)
+                    size_hint_x:0.2
+            BoxLayout:
+                orientation:'horizontal'
+                Water_slider:
+                    id: slider_quantity
+                    min: 70
+                    max: 240
+                    step: 5
+                    on_touch_down:root.update_water(self.value)
+                    on_touch_move:root.update_water(self.value)
                 Label:
                     #pos_hint:{'x':0,'y':0}
                     size_hint_x:0.2
                     text: '%s mL' % int(slider_quantity.value)
-				
-			Button: 
+
+            Button: 
                 text: 'My Coffee'
                 size_hint_x:0.4
                 #size_hint_y:0.3

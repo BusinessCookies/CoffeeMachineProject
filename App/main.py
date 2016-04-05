@@ -30,10 +30,10 @@ UD = OtherClasses.QuitApp()
 Users = CSV.Users()
 mycoffeelist = CSV.MycoffeeList()
 
-Normalcoffee=0.25
-ExpCoffee = 0.40
+Normalcoffee=OtherClasses.CoffeePriceClass("Normal")
+ExpCoffee = OtherClasses.CoffeePriceClass("Expensive")
 NumberOfDigitEntered=0
-
+path = "/home/coffee/Documents/Kivy/CoffeeMProject/PinLoginVersion2/App/Data/DB/"
 
 
 
@@ -50,10 +50,12 @@ class Monney(Label):
         Label.__init__(self, **kwargs)
         Clock.schedule_interval(self.callback,0.1)       
     def callback(self,dt):
+        global ExpCoffee
+        global Normalcoffee
         if float(currentuser.monney) <0 :
-            self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n 0,40 euros"   
+            self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n" + str(ExpCoffee.val) + " euros"   
         else:
-            self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n 0,25 euros"   
+            self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n" + str(Normalcoffee.val) + " euros"   
             
 class Beans_slider(Slider):
     def __init__(self, **kwargs):
@@ -92,6 +94,24 @@ class PinLabel(Label):
             self.text='* * * * _'
         if len(PinEnterred.val)== 5:
             self.text='* * * * *'
+
+class UpdatedLabel (Label):
+    def __init__(self, **kwargs):
+        Label.__init__(self, **kwargs)
+        global path
+        self.pathToFile = path + "updated_label.txt" 
+        try:
+            f=open(self.pathToFile, 'r')
+            self.text=f.read()
+        except:
+            print 'Cannot open this file'
+            
+        Clock.schedule_interval(self.callback,60)
+    def callback(self, dt):
+        self.text = open(self.pathToFile, 'r').read()            
+
+
+
 ################# Used for both Choose coffee and wlcome screen ##########################            
 class Easyclock(Label): 
     def __init__(self, **kwargs):

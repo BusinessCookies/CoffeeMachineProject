@@ -1,6 +1,10 @@
 from kivy.clock import Clock
 
 
+path = "/home/coffee/Documents/Kivy/CoffeeMProject/PinLoginVersion2/App/Data/DB/"
+
+
+
 class QuitApp:
     def __init__(self, **kwargs):
       self.bool = False
@@ -46,3 +50,23 @@ class UpdateDB():
     def callback(self,dt):
         thread.start_new_thread(subprocess.call, (["sudo","sh", "/kivy/CoffeeMProject/PinLoginVersion/update_network.sh"],))
    
+class CoffeePriceClass():
+    def __init__(self, pricetype):
+        global path
+        self.pricetype = pricetype
+        if pricetype == "Normal":
+            f = open(path+"NormCoffee.txt", 'r')
+        elif pricetype == "Expensive":
+            f = open(path+"ExpCoffee.txt", 'r')
+        else:
+            print "error"
+            pass
+        self.val=float(f.read())
+        Clock.schedule_interval(self.callback,600)
+    def callback(self,dt):
+        if self.pricetype == "Normal":
+            f = open(path+NormCoffee.txt, 'r')
+        elif self.pricetype == "Expensive":
+            f = open(path+ExpCoffee.txt, 'r')
+        self.val=float(f.read())
+        return

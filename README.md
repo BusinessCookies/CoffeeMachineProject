@@ -2,9 +2,23 @@
 <h3>
 	Jura coffee machine upgraded with a raspberry pi, running a Kivy app for customers management.
 </h3>
+<<<<<<< HEAD
 
 <p>
 In order to interface the raspberry with the coffee machine, we replaced button to order coffee by optocouplers, linked with the GPIO of the raspberry pi.
+=======
+<p>
+	You'll find two different directories in this project:
+	<li>
+		"App" directory contains every file that runs locally on the raspberry
+	</li>
+	<li>
+		"Server" directory where the website part is stored. It handle databases, customers management, and data analysis (not uploaded yet)
+</p>
+<h3>Raspberry part:</h3>
+<p>
+	In order to interface the raspberry with the coffee machine, we replaced button to order coffee by optocouplers, linked 	with the GPIO of the raspberry pi.
+>>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
 </p>
 
 <p>
@@ -24,6 +38,7 @@ You will find below every link we used in order to configurate raspbian and Kivy
 
 Here are a few picture of the coffee machine working :
 
+<<<<<<< HEAD
 ![ScreenShot](/Data/ImgReadMe/IMG_1636.JPG?raw=true )
 
 ![ScreenShot](/Data/ImgReadMe/IMG_1637.JPG?raw=true )
@@ -31,6 +46,15 @@ Here are a few picture of the coffee machine working :
 ![ScreenShot](/Data/ImgReadMe/IMG_1638.JPG?raw=true )
 
 ![ScreenShot](/Data/ImgReadMe/IMG_1639.JPG?raw=true )
+=======
+![ScreenShot](/App/Data/ImgReadMe/IMG_1636.JPG?raw=true )
+
+![ScreenShot](/App/Data/ImgReadMe/IMG_1637.JPG?raw=true )
+
+![ScreenShot](/App/Data/ImgReadMe/IMG_1638.JPG?raw=true )
+
+![ScreenShot](/App/Data/ImgReadMe/IMG_1639.JPG?raw=true )
+>>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
 
 <p>
 	To install Kivy on raspbian and to get started with Kivy: 
@@ -43,7 +67,11 @@ In order to boot directly on the Kivy app, we used a Daemon, following this tuto
 <p>
 	List of electronical parts:
 	<li>Touchscreen : https://www.element14.com/community/docs/DOC-78156/l/raspberry-pi-7-touchscreen-display</li>
+<<<<<<< HEAD
 	<li>Power supply: 5V/4A </li>
+=======
+	<li>Power supply: 5V/6A </li>
+>>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
 	<li>WLAN : http://www.edimax.com/edimax/merchandise/merchandise_detail/data/edimax/global/wireless_adapters_n150/ew-7811un</li>
 	<li>Adafruit Prototyping Pi Plate Kit: https://www.adafruit.com/products/801</li>
 

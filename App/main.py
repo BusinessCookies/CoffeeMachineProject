@@ -30,10 +30,17 @@ UD = OtherClasses.QuitApp()
 Users = CSV.Users()
 mycoffeelist = CSV.MycoffeeList()
 
+<<<<<<< HEAD
 Normalcoffee=OtherClasses.CoffeePriceClass("Normal")
 ExpCoffee = OtherClasses.CoffeePriceClass("Expensive")
 NumberOfDigitEntered=0
 path = "/home/coffee/Documents/Kivy/CoffeeMProject/PinLoginVersion2/App/Data/DB/"
+=======
+Normalcoffee=0.25
+ExpCoffee = 0.40
+NumberOfDigitEntered=0
+
+>>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
 
 
 
@@ -50,12 +57,19 @@ class Monney(Label):
         Label.__init__(self, **kwargs)
         Clock.schedule_interval(self.callback,0.1)       
     def callback(self,dt):
+<<<<<<< HEAD
         global ExpCoffee
         global Normalcoffee
         if float(currentuser.monney) <0 :
             self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n" + str(ExpCoffee.val) + " euros"   
         else:
             self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n" + str(Normalcoffee.val) + " euros"   
+=======
+        if float(currentuser.monney) <0 :
+            self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n 0,40 euros"   
+        else:
+            self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n 0,25 euros"   
+>>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
             
 class Beans_slider(Slider):
     def __init__(self, **kwargs):
@@ -94,6 +108,7 @@ class PinLabel(Label):
             self.text='* * * * _'
         if len(PinEnterred.val)== 5:
             self.text='* * * * *'
+<<<<<<< HEAD
 
 class UpdatedLabel (Label):
     def __init__(self, **kwargs):
@@ -112,6 +127,8 @@ class UpdatedLabel (Label):
 
 
 
+=======
+>>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
 ################# Used for both Choose coffee and wlcome screen ##########################            
 class Easyclock(Label): 
     def __init__(self, **kwargs):
@@ -186,16 +203,23 @@ class WelcomeScreen(Screen):
             return
     def do_action(self,digit):
         global PinEnterred
+<<<<<<< HEAD
         if digit == "update":
 			thread.start_new_thread(subprocess.call, (["sudo","sh", "/kivy/CoffeeMProject/PinLoginVersion/update_network.sh"],))
 			return
         elif len(PinEnterred.val)<5:
+=======
+        if len(PinEnterred.val)<5:
+>>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
             if digit=='del':
                 if len(PinEnterred.val)>0:
                     PinEnterred.RemoveDigit()
             else:
                 PinEnterred.AddDigit(str(digit))
+<<<<<<< HEAD
         
+=======
+>>>>>>> 1a59f2a9402a3ca1905137f35890bc9a9a07a26d
             
         
 class UnregisteredScreen(Screen):

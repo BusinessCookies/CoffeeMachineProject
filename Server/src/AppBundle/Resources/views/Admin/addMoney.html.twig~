@@ -1,0 +1,19 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}
+  Add money - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+<h3>Add Money</h3>
+
+
+<div class="well">
+
+  {{ form(form) }}
+
+</div>
+
+{% endblock %}
+

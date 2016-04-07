@@ -1,0 +1,67 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}
+  Data Analysis - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+<h3>Data Analysis</h3>
+
+<fieldset>
+  <div style="display: flex; align-items: center;">
+  <label for="select">Data type: </label>
+  <select name="select" id="select" style="vertical-align : middle;">
+    <option value="coffee" selected="selected">Coffee</option>
+    <option value="updates">Updates</option>
+    <option value="connections">Connections</option>
+    <option value="money">Money</option>
+  </select>
+  
+  <label for="datepicker">   Select a day</label>
+  <input name="datepicker" type="text" id="datepicker">
+  <label for="datepicker">   or select a month</label>
+  <input name="monthpicker" type="text" id="monthpicker">
+  </div>
+</fieldset>
+
+<div id="canvasframe" style="height:70%; width:70%;float: left;">
+  <canvas id="canvas" ></canvas>
+</div>
+
+<div id="infosframe" style="margin-left:70%; height: 70%;">
+</div>
+
+
+
+
+<div hidden  class="traceback_data">
+{{ tracebackdata }}
+</div>
+
+<div hidden  class="date_data">
+{{ datedata }}
+</div>
+
+<div hidden  class="admin_data">
+{{ admindata }}
+</div>
+
+<div hidden  class="connection_data">
+{{ connectiondata }}
+</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@AppBundle/Resources/public/js/*' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@AppBundle/Resources/public/js/dataAnalysis/*' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+

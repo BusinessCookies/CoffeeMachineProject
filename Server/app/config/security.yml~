@@ -1,0 +1,30 @@
+security:
+    providers:
+        main:
+          id: fos_user.user_provider.username
+            
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/raspi, roles: ROLE_RASPI }
+        
+    encoders:
+        UserBundle\Entity\User: sha512
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            pattern: ^/ 
+            anonymous: true
+            provider:  main
+            form_login:
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+            logout:
+                path:       fos_user_security_logout
+                target:     /platform
+            remember_me:
+                key:        %secret%
+

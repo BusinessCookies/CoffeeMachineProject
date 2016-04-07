@@ -1,0 +1,30 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}
+  Modify Date Data - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+<h3>Modify Date Data</h3>
+
+
+<div class="well">
+
+  {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.data) }}
+        {{ form_errors(form.data) }}
+        {{ form_widget(form.data, {'attr': {'class': 'form-control', 'rows': '15'}}) }}
+    </div>
+
+
+{{ form_end(form) }}
+
+</div>
+
+{% endblock %}
+
+

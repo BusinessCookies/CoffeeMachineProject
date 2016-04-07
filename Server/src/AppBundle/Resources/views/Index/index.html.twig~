@@ -1,0 +1,35 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}
+  Index - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+
+{% if is_granted('ROLE_USER') %}
+  
+{% endif %}
+
+{% if is_granted('ROLE_ADMIN') %}
+<div>
+<ul>
+<li><a href="{{ path('admin_getadmindata') }}">Get Admin Data</a></li>
+<li><a href="{{ path('admin_getdatedata') }}">Get Date Data</a></li>
+<li><a href="{{ path('admin_addmoney') }}">Add Money</a></li>
+<li><a href="{{ path('admin_modifydatedata') }}">Modify Date Data</a></li>
+<li><a href="{{ path('admin_modifyadmindata') }}">Modify Date Data</a></li>
+</ul>
+</div>
+{% endif %}
+
+{% if is_granted('ROLE_RASPI') %}
+<div>
+<ul>
+<li><a href="{{ path('raspi_getadmindata') }}">Get Admin Data</a></li>
+<li><a href="{{ path('raspi_adddatedata') }}">Add Date Data</a></li>
+</ul>
+</div>
+{% endif %}
+
+{% endblock %}

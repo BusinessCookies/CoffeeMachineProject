@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html style="min-height:100%; min-width:100%; height:100%; width:100%">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Business Cookies{% endblock %}</title>
+        {% block stylesheets %}
+          {% stylesheets 'css/*' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+          {% endstylesheets %}
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body style="min-height:100%; min-width:100%; height:100%; width:100%">
+        <div class="well">
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+          Eingeloggt als {{ app.user.username }} 
+          -
+          <a href="{{ path('fos_user_security_logout') }}">Abmelden</a>
+        {% else %}
+          <a href="{{ path('fos_user_security_login') }}">Anmelden</a>
+        {% endif %}
+        </div>
+        {% block body %}
+        
+        {% endblock %}
+        
+        {% block javascripts %}
+          {% javascripts 'js/jquery-min.js' %}
+            <script src="{{ asset_url }}"></script>
+          {% endjavascripts %}
+          {% javascripts 'js/jquery-ui.min.js' %}
+            <script src="{{ asset_url }}"></script>
+          {% endjavascripts %}
+          {% javascripts 'js/MonthPicker.min.js' %}
+            <script src="{{ asset_url }}"></script>
+          {% endjavascripts %}
+        {% endblock %}
+    </body>
+</html>

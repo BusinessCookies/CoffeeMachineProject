@@ -1,0 +1,47 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}
+  Index - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+{{ parent() }}
+
+{% if is_granted('ROLE_USER') %}
+  
+{% endif %}
+
+{% if is_granted('ROLE_ADMIN') %}
+<div class="well">
+MANAGING THE DATA
+<ul>
+<li><a href="{{ path('admin_dataanalysis') }}">Data Analysis</a></li>
+<li><a href="{{ path('admin_getadmindata') }}">Get Admin Data</a></li>
+<li><a href="{{ path('admin_getdatedata') }}">Get Date Data</a></li>
+<li><a href="{{ path('admin_gettracebackdata') }}">Get Traceback Data</a></li>
+<li><a href="{{ path('admin_addmoney') }}">Add Money</a></li>
+<li><a href="{{ path('admin_modifydatedata') }}">Modify Date Data</a></li>
+<li><a href="{{ path('admin_modifyadmindata') }}">Modify Admin Data</a></li>
+</ul>
+</div>
+
+<div class="well">
+MANAGING THE ADMIN-USER
+<ul>
+<li><a href="{{ path('fos_user_change_password') }}">Change password</a></li>
+</ul>
+</div>
+
+{% endif %}
+
+{% if is_granted('ROLE_RASPI') %}
+<div>
+<div class="well">
+MANAGING THE RASPI-USER
+<ul>
+<li><a href="{{ path('fos_user_change_password') }}">Change password</a></li>
+</ul>
+</div>
+{% endif %}
+
+{% endblock %}

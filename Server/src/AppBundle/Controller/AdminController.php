@@ -5,15 +5,111 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use AppBundle\Entity\Data;
 use AppBundle\Entity\AddMoney;
 use AppBundle\Form\AddMoneyType;
 use AppBundle\Form\DataType;
-DateTime \use;
+use \DateTime;
 
 
 class AdminController extends Controller
 {
+    /**
+     * @Route("/admin/getUpdatedLabel", name="admin_getupdatedlabel")
+     */
+    public function getUpdatedLabel(Request $request)
+    {
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("UpdatedLabel");
+      if (null === $data) {
+        throw new NotFoundHttpException("Could not find the file UpdatedLabel");
+      }
+      return $this->render('AppBundle:Admin:getData.html.twig', array('datatype' => "UpdatedLabel", 'data' => $data->GetData()));
+    }
+    
+    /**
+     * @Route("/admin/modifyUpdatedLabel", name="admin_modifyupdatedlabel")
+     */
+    public function modifyUpdatedLabel(Request $request)
+    {
+	  $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("UpdatedLabel");
+      $form = $this->get('form.factory')->create(new DataType(), $data);
+      if ($form->handleRequest($request)->isValid()) {
+        // Update Date Data
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Valid');
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:modifyData.html.twig', array('datatype' => "UpdatedLabel", 'form' => $form->createView()));
+    }
+    
+    /**
+     * @Route("/admin/getNormCoffee", name="admin_getnormcoffee")
+     */
+    public function getNormCoffee(Request $request)
+    {
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("NormCoffee");
+      if (null === $data) {
+        throw new NotFoundHttpException("Could not find the file NormCoffee");
+      }
+      return $this->render('AppBundle:Admin:getData.html.twig', array('datatype' => "NormCoffee", 'data' => $data->GetData()));
+    }
+    
+    /**
+     * @Route("/admin/modifyNormCoffee", name="admin_modifynormcoffee")
+     */
+    public function modifyNormCoffee(Request $request)
+    {
+	  $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("NormCoffee");
+      $form = $this->get('form.factory')->create(new DataType(), $data);
+      if ($form->handleRequest($request)->isValid()) {
+        // Update Date Data
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Valid');
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:modifyData.html.twig', array('datatype' => "NormCoffee", 'form' => $form->createView()));
+    }
+
+    /**
+     * @Route("/admin/getExpCoffee", name="admin_getexpcoffee")
+     */
+    public function getExpCoffee(Request $request)
+    {
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("ExpCoffee");
+      if (null === $data) {
+        throw new NotFoundHttpException("Could not find the file ExpCoffee");
+      }
+      return $this->render('AppBundle:Admin:getData.html.twig', array('datatype' => "ExpCoffee", 'data' => $data->GetData()));
+    }
+    
+    /**
+     * @Route("/admin/modifyExpCoffee", name="admin_modifyexpcoffee")
+     */
+    public function modifyExpCoffee(Request $request)
+    {
+	  $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("ExpCoffee");
+      $form = $this->get('form.factory')->create(new DataType(), $data);
+      if ($form->handleRequest($request)->isValid()) {
+        // Update Date Data
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Valid');
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:modifyData.html.twig', array('datatype' => "ExpCoffee", 'form' => $form->createView()));
+    }
 
 	/**
      * @Route("/admin/normalizeData", name="admin_normlizedata")

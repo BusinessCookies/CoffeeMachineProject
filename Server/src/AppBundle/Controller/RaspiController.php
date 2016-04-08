@@ -13,6 +13,43 @@ use AppBundle\Form\DataType;
 class RaspiController extends Controller
 {
 
+
+    /**
+     * @Route("/raspi/getExpPrice", name="raspi_get_exp_price")
+		 * @Method({"GET"})
+     */
+		public function getExpPrice(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $repository = $em->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("ExpCoffee");
+      return new Response(trim($data->GetData()));
+    }
+    
+    /**
+     * @Route("/raspi/getNormPrice", name="raspi_get_norm_price")
+		 * @Method({"GET"})
+     */
+		public function getNormPrice(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $repository = $em->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("NormCoffee");
+      return new Response(trim($data->GetData()));
+    }
+    
+    /**
+     * @Route("/raspi/getUpdatedLabel", name="raspi_get_update_label")
+		 * @Method({"GET"})
+     */
+		public function getUpdatedLabel(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $repository = $em->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("UpdatedLabel");
+      return new Response(trim($data->GetData()));
+    }
+    
 		/**
      * @Route("/raspi/update", name="raspi_update")
 		 * @Method({"POST"})
@@ -72,7 +109,6 @@ class RaspiController extends Controller
       $admindata->SetData($this->unparseCSV($csvadmin, ";", "\n"));
       $em->persist($admindata);
       $em->flush();
-      
       return new Response(trim($admindata->GetData()));
     }
     

@@ -8,14 +8,13 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Data;
 
-class DeleteDoubleDate implements FixtureInterface
+class CreateFiles implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
 			// Create needed file if don't exist
-      $types = ['Date', 'Admin', 'Traceback', 'Connections'];
-      $em = $this->getDoctrine()->getManager();
-      $repository = $em->getRepository('AppBundle:Data');
+      $types = ['Date', 'Admin', 'Traceback', 'Connections', 'ExpCoffee', 'NormCoffee', 'UpdatedLabel'];
+      $repository = $manager->getRepository('AppBundle:Data');
       foreach($types as $type)
       {
         $data = $repository->findOneByFile($type);
@@ -24,8 +23,8 @@ class DeleteDoubleDate implements FixtureInterface
           $data = new Data();
           $data->SetData('');
           $data->SetFile($type);
-          $em->persist($data);
-          $em->flush();
+          $manager->persist($data);
+          $manager->flush();
         }
       }
     }

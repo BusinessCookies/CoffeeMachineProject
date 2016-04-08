@@ -18,7 +18,7 @@ from kivy.uix.behaviors import ButtonBehavior
 import CSV
 import subprocess
 import OtherClasses
-
+import FoncGPIO as gpio
 
 ######################## Global Variables #########################
 
@@ -33,9 +33,7 @@ mycoffeelist = CSV.MycoffeeList()
 Normalcoffee=OtherClasses.CoffeePriceClass("Normal")
 ExpCoffee = OtherClasses.CoffeePriceClass("Expensive")
 NumberOfDigitEntered=0
-path = "/home/coffee/Documents/Kivy/CoffeeMProject/PinLoginVersion2/App/Data/DB/"
-Normalcoffee=0.25
-ExpCoffee = 0.40
+path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/"
 NumberOfDigitEntered=0
 
 
@@ -60,10 +58,7 @@ class Monney(Label):
             self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n" + str(ExpCoffee.val) + " euros"   
         else:
             self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n" + str(Normalcoffee.val) + " euros"   
-        if float(currentuser.monney) <0 :
-            self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n 0,40 euros"   
-        else:
-            self.text = str(currentuser.monney) +" euros\n Cost of your coffee:\n 0,25 euros"   
+
             
 class Beans_slider(Slider):
     def __init__(self, **kwargs):
@@ -111,12 +106,17 @@ class UpdatedLabel (Label):
         try:
             f=open(self.pathToFile, 'r')
             self.text=f.read()
+            f.close()
         except:
             print 'Cannot open this file'
-            
         Clock.schedule_interval(self.callback,60)
     def callback(self, dt):
-        self.text = open(self.pathToFile, 'r').read()            
+        try:
+            f=open(self.pathToFile, 'r')
+            self.text=f.read()
+            f.close()
+        except:
+            print 'Cannot open this file'
 
 
 
@@ -177,6 +177,12 @@ class WelcomeScreen(Screen):
                     else:
                         currentuser.admin=False
                     currentuser.monney=row[2]
+                    print currentuser.monney
+                    if float(currentuser.monney) < -10.0:
+                        if currentuser.admin == False:
+                            print "coucou"
+                            self.manager.current='FS'
+                            return
                     for row1 in mycoffeelist.Mycoffee:
                         if currentuser.UID == row1[0]:
                             currentuser.beans=row1[1]
@@ -186,6 +192,7 @@ class WelcomeScreen(Screen):
                     mycoffeelist.setDefaultuser(currentuser)
                     currentuser.beans='3'
                     currentuser.water='180'
+                    print currentuser.monney
                     self.manager.current='CCS'
                     return
             self.manager.current='US'
@@ -198,12 +205,12 @@ class WelcomeScreen(Screen):
 			thread.start_new_thread(subprocess.call, (["sudo","sh", "/kivy/CoffeeMProject/PinLoginVersion/update_network.sh"],))
 			return
         elif len(PinEnterred.val)<5:
-        if len(PinEnterred.val)<5:
-            if digit=='del':
-                if len(PinEnterred.val)>0:
-                    PinEnterred.RemoveDigit()
-            else:
-                PinEnterred.AddDigit(str(digit))
+            if len(PinEnterred.val)<5:
+                if digit=='del':
+                    if len(PinEnterred.val)>0:
+                        PinEnterred.RemoveDigit()
+                else:
+                    PinEnterred.AddDigit(str(digit))
             
         
 class UnregisteredScreen(Screen):
@@ -216,6 +223,15 @@ class UnregisteredScreen(Screen):
     def callback(self,dt):
         self.manager.current='WS'
 
+class ForbiddenScreen(Screen):
+    def __init__(self, **kwargs):
+        Screen.__init__(self, **kwargs)
+    def on_enter(self):
+        global PinEnterred
+        PinEnterred.DelPin()
+        Clock.schedule_once(self.callback, 5)        
+    def callback(self,dt):
+        self.manager.current='WS'
 
 class DankeScreen(Screen):
     def __init__(self, **kwargs):
@@ -287,9 +303,9 @@ class ChooseCoffeeScreen(Screen):
             else:
                 ad="nein"
             if currentuser.monney<0:
-                price=Expcoffee
+                price=Expcoffee.val
             else:
-                price=Normalcoffee
+                price=Normalcoffee.val
             Users.SetUser([currentuser.UID,ad, str(float(currentuser.monney)-price), currentuser.pin])
         if str(ButtonPressed)=="Double Expresso":
             gpio.DoDoubleExpresso()
@@ -301,9 +317,9 @@ class ChooseCoffeeScreen(Screen):
             else:
                 ad="nein"
             if currentuser.monney<0:
-                price=Expcoffee
+                price=Expcoffee.val
             else:
-                price=Normalcoffee
+                price=Normalcoffee.val
             Users.SetUser([currentuser.UID,ad, str(float(currentuser.monney)-price), currentuser.pin])
         if str(ButtonPressed)=="Coffee":
             gpio.DoCoffee()
@@ -315,9 +331,9 @@ class ChooseCoffeeScreen(Screen):
             else:
                 ad="nein"
             if currentuser.monney<0:
-                price=Expcoffee
+                price=Expcoffee.val
             else:
-                price=Normalcoffee
+                price=Normalcoffee.val
             Users.SetUser([currentuser.UID,ad, str(float(currentuser.monney)-price), currentuser.pin])
         if str(ButtonPressed)=="Double Coffee":
             gpio.DoDoubleCoffee()
@@ -329,9 +345,9 @@ class ChooseCoffeeScreen(Screen):
             else:
                 ad="nein"
             if currentuser.monney<0:
-                price=Expcoffee
+                price=Expcoffee.val
             else:
-                price=Normalcoffee
+                price=Normalcoffee.val
             Users.SetUser([currentuser.UID,ad, str(float(currentuser.monney)-price), currentuser.pin])
         if str(ButtonPressed)=="My Coffee":
             #print "\n\nHey I'm making a My Coffee with ", beans, "/4 beans and ", water, "mL of water"
@@ -347,9 +363,9 @@ class ChooseCoffeeScreen(Screen):
             else:
                 ad="nein"
             if currentuser.monney<0:
-                price=Expcoffee
+                price=Expcoffee.val
             else:
-                price=Normalcoffee
+                price=Normalcoffee.val
             Users.SetUser([currentuser.UID,ad, str(float(currentuser.monney)-price), currentuser.pin])
 
 class ChooseCoffeeAdminScreen(Screen):
@@ -396,6 +412,7 @@ class CoffeeMachineApp(App):
         sm.add_widget(ChooseCoffeeAdminScreen(name='CCAS'))
         sm.add_widget(DankeScreen(name='DS'))
         sm.add_widget(DankeScreen2(name='DS2'))
+        sm.add_widget(ForbiddenScreen(name='FS'))
         #Launch the app
         return sm
         

@@ -1,8 +1,5 @@
 import os
 
-
-###### This file define the CSV parser we use ############################
-
 def GetCSVFromFile(path):
   f = open(path, "rb")
   csvstring = f.read()
@@ -52,3 +49,25 @@ def Unparse(tab):
     string += '\n'
   return string.strip()
   
+#f = open('admin.csv', "rb")
+#csvstring = f.read()
+#print repr(csvstring)
+#f.close() 
+  
+# Parse a file
+#print GetCSVFromFile('admin.csv')
+
+# Set a file 
+#tab = GetCSVFromFile('admin.csv')
+#SetCSVToFile('admin.csv', tab)
+
+# Append to a file
+#tab = GetCSVFromFile('admin.csv')
+#AppendCSVToFile('date.csv', tab)
+
+# To modify a line (for example for admin file update)
+#tab = GetCSVFromFile('admin.csv')
+#for i, line in enumerate(tab):
+  #if(user[0] == line[0]):
+    #tab[i] = user
+#SetCSVToFile('admin.csv', tab)

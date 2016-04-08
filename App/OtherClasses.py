@@ -1,7 +1,7 @@
 from kivy.clock import Clock
+import thread
 
-
-path = "/home/coffee/Documents/Kivy/CoffeeMProject/PinLoginVersion2/App/Data/DB/"
+path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/"
 
 
 
@@ -48,7 +48,7 @@ class UpdateDB():
     def __init__(self, **kwargs):
         Clock.schedule_interval(self.callback,1200)
     def callback(self,dt):
-        thread.start_new_thread(subprocess.call, (["sudo","sh", "/kivy/CoffeeMProject/PinLoginVersion/update_network.sh"],))
+        thread.start_new_thread(subprocess.call, (["sudo","/bin/bash", "/kivy/CoffeeMProject/PinLoginVersion/update_network.sh"],))
    
 class CoffeePriceClass():
     def __init__(self, pricetype):
@@ -62,6 +62,7 @@ class CoffeePriceClass():
             print "error"
             pass
         self.val=float(f.read().strip())
+        f.close()
         Clock.schedule_interval(self.callback,600)
     def callback(self,dt):
         global path
@@ -70,4 +71,5 @@ class CoffeePriceClass():
         elif self.pricetype == "Expensive":
             f = open(path+"ExpCoffee.txt", 'rb')
         self.val=float(f.read().strip())
+        f.close()
         return

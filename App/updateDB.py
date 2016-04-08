@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import threading
 import requests
 from bs4 import BeautifulSoup
 import sys
@@ -22,6 +21,7 @@ def updateData(csv_date):
         # LOGIN
         
         r = s.get('http://your-website.com')#, timeout=5)
+        r.raise_for_status()
         html = BeautifulSoup(r.text,"lxml")
         csrf = html.find('input', {'name': '_csrf_token'}).get('value')
         payload = {
@@ -30,18 +30,28 @@ def updateData(csv_date):
             '_submit': 'Anmelden',
             '_username': 'usrname'
         }
-        r = s.post('http://your-website.com/login_check', data=payload)#, timeout=5)
+        r = s.post('http://your-website.com/login_check', data=payload)
         # UPDATE
         date = {'date': csv_date}
-        r = s.post('hhttp://your-website.com/raspi/update', data=date)#, timeout=5)
-        r = s.post('', data=payload)#, timeout=5)
-        # UPDATE
-        date = {'date': csv_date}
-        r = s.post('', data=date)#, timeout=5)
-        r.raise_for_status()
+        Admin = s.post('http://your-website.com/raspi/update', data=date)
+        Admin.raise_for_status()
+        AdminResp = Admin.text.strip()
+        
+        ExpPrice = s.get('http://your-website.com/raspi/getExpPrice')
+        ExpPrice.raise_for_status()
+        ExpPriceResp = ExpPrice.text.strip()
+        
+        NormPrice = s.get('http://your-website.com/raspi/getNormPrice')
+        NormPrice.raise_for_status()
+        NormPriceResp = NormPrice.text.strip()
+        
+        UpdatedLabelPrice = s.get('http://your-website.com/raspi/getUpdatedLabel')
+        UpdatedLabelPrice.raise_for_status()
+        UpdatedLabelPriceResp = UpdatedLabelPrice.text.strip()
+        
         if(r.text.strip().count(';') == 0 or r.text.strip().count(';')%3 != 0):
           return (False,"Error")
-        return (True,r.text.strip())
+        return (True,AdminResp, ExpCoffeeResp, NormCoffeeResp, UpdatedLabelResp)
     except:
         print sys.exc_info()[0]
         return (False,"Error")
@@ -62,7 +72,7 @@ except Exception, e:
     pass
 
 UpdateOK = False
-UpdateOk, adminString = updateData(date)
+UpdateOk, adminString, ExpCoffeeResp, NormCoffeeResp, UpdatedLabelResp = updateData(date)
 
 print "\n database asked \n"
 
@@ -80,6 +90,24 @@ if UpdateOk==True:
     f.close()
     f = open("/home/pi/Desktop/network.log", "a")
     f.write("OK !\r\n")
+    f.close()
+    
+    path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/ExpCoffee.txt"
+    os.remove(path)
+    f = open(path, "wb")
+    f.write(ExpCoffeeResp.strip())
+    f.close()
+    
+    path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/NormCoffee.txt"
+    os.remove(path)
+    f = open(path, "wb")
+    f.write(NormCoffeeResp.strip())
+    f.close()
+    
+    path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/updated_label.txt"
+    os.remove(path)
+    f = open(path, "wb")
+    f.write(UpdatedLabelResp.strip())
     f.close()
 else:
     f = open("/home/pi/Desktop/network.log", "a")

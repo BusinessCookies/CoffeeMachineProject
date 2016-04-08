@@ -55,18 +55,19 @@ class CoffeePriceClass():
         global path
         self.pricetype = pricetype
         if pricetype == "Normal":
-            f = open(path+"NormCoffee.txt", 'r')
+            f = open(path+"NormCoffee.txt", 'rb')
         elif pricetype == "Expensive":
-            f = open(path+"ExpCoffee.txt", 'r')
+            f = open(path+"ExpCoffee.txt", 'rb')
         else:
             print "error"
             pass
-        self.val=float(f.read())
+        self.val=float(f.read().strip())
         Clock.schedule_interval(self.callback,600)
     def callback(self,dt):
+        global path
         if self.pricetype == "Normal":
-            f = open(path+NormCoffee.txt, 'r')
+            f = open(path+"NormCoffee.txt", 'rb')
         elif self.pricetype == "Expensive":
-            f = open(path+ExpCoffee.txt, 'r')
-        self.val=float(f.read())
+            f = open(path+"ExpCoffee.txt", 'rb')
+        self.val=float(f.read().strip())
         return

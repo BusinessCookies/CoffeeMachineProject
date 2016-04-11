@@ -52,9 +52,13 @@ def updateData(csv_date):
         UpdatedLabel.raise_for_status()
         UpdatedLabelResp = UpdatedLabel.text.strip()
         
+        MinMonney = s.get(url+'/raspi/getMinMonney')
+        MinMonney.raise_for_status()
+        MinMonneyResp = MinMonney.text.strip()
+        
         if(AdminResp.count(';') == 0 or AdminResp.count(';')%3 != 0):
           return (False,"Error", "", "", "")
-        return (True,AdminResp, ExpPriceResp, NormPriceResp, UpdatedLabelResp)
+        return (True,AdminResp, ExpPriceResp, NormPriceResp, UpdatedLabelResp, MinMonneyResp)
     except:
         print sys.exc_info()[0]
         return (False,"Error", "", "", "")
@@ -75,7 +79,7 @@ except Exception, e:
     pass
 
 UpdateOK = False
-UpdateOk, adminString, ExpCoffeeResp, NormCoffeeResp, UpdatedLabelResp = updateData(date)
+UpdateOk, adminString, ExpCoffeeResp, NormCoffeeResp, UpdatedLabelResp, MinMonneyResp = updateData(date)
 
 print "\n database asked \n"
 
@@ -112,6 +116,13 @@ if UpdateOk==True:
     f = open(path, "wb")
     f.write(UpdatedLabelResp.strip())
     f.close()
+    
+    path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/MinMonney.txt"
+    os.remove(path)
+    f = open(path, "wb")
+    f.write(NormCoffeeResp.strip())
+    f.close()
+    
 else:
     f = open("/home/pi/Desktop/network.log", "a")
     f.write("NOT OK !\r\n")

@@ -32,6 +32,9 @@ mycoffeelist = CSV.MycoffeeList()
 
 Normalcoffee=OtherClasses.CoffeePriceClass("Normal")
 ExpCoffee = OtherClasses.CoffeePriceClass("Expensive")
+MinMonney = OtherClasses.CoffeePriceClass("MinMonney")
+
+
 NumberOfDigitEntered=0
 path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/"
 NumberOfDigitEntered=0
@@ -179,7 +182,7 @@ class WelcomeScreen(Screen):
                         currentuser.admin=False
                     currentuser.monney=row[2]
                     print currentuser.monney
-                    if float(currentuser.monney) < -10.0:
+                    if float(currentuser.monney) < MinMonney.val:
                         if currentuser.admin == False:
                             #print "coucou"
                             self.manager.current='FS'

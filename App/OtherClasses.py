@@ -60,6 +60,8 @@ class CoffeePriceClass():
             f = open(path+"NormCoffee.txt", 'rb')
         elif pricetype == "Expensive":
             f = open(path+"ExpCoffee.txt", 'rb')
+        elif pricetype == "MinMonney":
+            f = open(path+"MinMonney.txt", 'rb')
         else:
             print "error"
             pass
@@ -71,6 +73,8 @@ class CoffeePriceClass():
             f = open(path+"NormCoffee.txt", 'rb')
         elif self.pricetype == "Expensive":
             f = open(path+"ExpCoffee.txt", 'rb')
+        elif self.pricetype == "MinMonney":
+            f = open(path+"MinMonney.txt", 'rb')
         self.val=float(f.read().strip())
         f.close()
         return

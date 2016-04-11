@@ -14,7 +14,7 @@ class LoadUsers implements FixtureInterface
     // Add admin
     $user = new User;
     $user->setUsername("admin");
-    $user->setPassword("pwd");
+    $user->setPassword("admin");
     $user->setSalt('');
     $user->setRoles(array('ROLE_ADMIN'));
     $manager->persist($user);
@@ -22,7 +22,7 @@ class LoadUsers implements FixtureInterface
     // Add raspi
     $user = new User;
     $user->setUsername("raspi");
-    $user->setPassword("pwd");
+    $user->setPassword("raspi");
     $user->setSalt('');
     $user->setRoles(array('ROLE_RASPI'));
     $manager->persist($user);

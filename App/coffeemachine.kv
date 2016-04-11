@@ -107,8 +107,43 @@
         font_size:35
         halign:'center'
 
-
-
+<UpdateScreen>
+    name:'UpS'
+    canvas.before:
+        Color:
+            rgba: (0.4,0.45,0.5,0.1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Image:
+        source:'Data/Img/Background.jpg'
+    Label:
+        markup: True
+        text:'[color=#ff0000]Do you want to\n update databases\nOn the coffee machine? \n [/color]'
+        font_size:35
+        halign:'center'
+    GridLayout:
+        cols:2
+        padding:40
+        spacing:40
+        Button:
+            text: 'Yes'
+            on_press: root.do_action('Yes',0,0)
+            on_release: app.root.current='UIPS'
+        Button:
+            text:'No'
+            on_press: app.root.current='WS'
+            
+<WaitUpdateScreen>
+    name:'WUpS'
+    Image:
+        source:'Data/Img/Background.jpg'
+    Label:
+        text:'The database is being updated'
+        font_size:35
+        halign:'center'
+        
+        
 <ChooseCoffeeScreen>:
     name: 'CCS'
     Image:

@@ -13,8 +13,6 @@
                 #pos_hint:{'x':0 , 'y':0.25}
             UpdatedLabel: 
                 text:self.text
-            Label: 
-                text:self.text
                 font_size: 25
                 halign: 'center'
             PinLabel:
@@ -68,8 +66,6 @@
                 Button:
                     text: 'Update'
                     on_press:root.do_action("update")
-                Label:
-                    text: '  '
                 Button:
                     text: "0"
                     on_press: root.do_action("0")
@@ -94,7 +90,60 @@
         font_size:35
         halign:'center'
 
+                    
+<ForbiddenScreen>
+    name:'FS'
+    canvas.before:
+        Color:
+            rgba: (0.4,0.45,0.5,0.1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Image:
+        source:'Data/Img/Background.jpg'
+    Label:
+        markup: True
+        text:'[color=#ff0000]You are not allowed to\n order coffee anymore\nPlease go in room 570 \nto charge your account [/color]'
+        font_size:35
+        halign:'center'
 
+<UpdateScreen>
+    name:'UpS'
+    canvas.before:
+        Color:
+            rgba: (0.4,0.45,0.5,0.1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Image:
+        source:'Data/Img/Background.jpg'
+    Label:
+        markup: True
+        text:'[color=#ff0000]Do you want to\n update databases\nOn the coffee machine? \n [/color]'
+        font_size:35
+        halign:'center'
+    GridLayout:
+        cols:2
+        padding:40
+        spacing:40
+        Button:
+            text: 'Yes'
+            on_press: root.do_action('Yes',0,0)
+            on_release: app.root.current='UIPS'
+        Button:
+            text:'No'
+            on_press: app.root.current='WS'
+            
+<WaitUpdateScreen>
+    name:'WUpS'
+    Image:
+        source:'Data/Img/Background.jpg'
+    Label:
+        text:'The database is being updated'
+        font_size:35
+        halign:'center'
+        
+        
 <ChooseCoffeeScreen>:
     name: 'CCS'
     Image:
@@ -124,21 +173,21 @@
             Button:
                 text: 'Expresso'
                 on_press: root.do_action('Expresso',0,0)
-                on_release: app.root.current='third'
+                on_release: app.root.current='DS'
             Button: 
                 text: 'Double Expresso'
                 on_press: root.do_action('Double Expresso',0,0)
-                on_release: app.root.current='third'
+                on_release: app.root.current='DS'
                 #size_hint_y: 1
             Button: 
                 text: 'Coffee'
                 on_press: root.do_action('Coffee',0,0)
-                on_release: app.root.current='third'
+                on_release: app.root.current='DS'
                 #size_hint_y: 1
             Button: 
                 text: 'Double Coffee'
                 on_press: root.do_action('Double Coffee',0,0)
-                on_release: app.root.current='third'
+                on_release: app.root.current='DS'
         Monney:
             pos_hint:{'x':0,'top':0.6}
             size_hint_y:0.2
@@ -165,7 +214,7 @@
             BoxLayout:
                 orientation:'horizontal'
                 Beans_slider:
-                size_hint_x:0.8
+                    size_hint_x:0.8
                     id:slider_beans
                     min: 1
                     max: 5
@@ -195,7 +244,7 @@
                 #size_hint_y:0.3
                 pos_hint:{'x':0.3, 'y':0}
                 on_press: root.do_action('My Coffee',slider_beans.value,slider_quantity.value)
-                on_release: app.root.current='third'
+                on_release: app.root.current='DS'
 
 <ChooseCoffeeAdminScreen>:
     name: 'CCAS'
@@ -222,23 +271,19 @@
             Button:
                 text: 'Expresso'
                 on_press: root.do_action('Expresso')
-                #on_release: app.root.current='third'
                 size_hint_y: 0.05
                 
             Button: 
                 text: 'Double Expresso'
                 on_press: root.do_action('Double Expresso')
-                #on_release: app.root.current='third'
                 size_hint_y: 0.05
             Button: 
                 text: 'Coffee'
                 on_press: root.do_action('Coffee')
-                #on_release: app.root.current='third'
                 size_hint_y: 0.05
             Button: 
                 text: 'Double Coffee'
                 on_press: root.do_action('Double Coffee')
-                #on_release: app.root.current='third'
                 size_hint_y: 0.05
             Button: 
                 text: 'Filter'
@@ -282,7 +327,7 @@
             spacing:20
             Button:
                 text: 'Back'
-                on_release: app.root.current='second'
+                on_release: app.root.current='CCS'
                 
 <DankeScreen>:
     name:'DS'
@@ -310,15 +355,15 @@
                 ImageButton:
                     source: 'Data/Img/Unhappy.png'
                     on_press: root.do_action("Bad")
-                    on_release: app.root.current='danke2'
+                    on_release: app.root.current='DS2'
                 ImageButton:
                     source: 'Data/Img/Medium.png'
                     on_press: root.do_action("Medium")
-                    on_release: app.root.current='danke2'
+                    on_release: app.root.current='DS2'
                 ImageButton:
                     source: 'Data/Img/Happy.png'
                     on_press: root.do_action("Good")
-                    on_release: app.root.current='danke2'
+                    on_release: app.root.current='DS2'
 
 <DankeScreen2>:
     name:'DS2'

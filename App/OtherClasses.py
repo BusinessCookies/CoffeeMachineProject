@@ -1,4 +1,6 @@
 from kivy.clock import Clock
+import thread
+import subprocess
 
 
 path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/"
@@ -62,6 +64,7 @@ class CoffeePriceClass():
             print "error"
             pass
         self.val=float(f.read().strip())
+        f.close()
         Clock.schedule_interval(self.callback,600)
     def callback(self,dt):
         if self.pricetype == "Normal":
@@ -69,4 +72,5 @@ class CoffeePriceClass():
         elif self.pricetype == "Expensive":
             f = open(path+"ExpCoffee.txt", 'rb')
         self.val=float(f.read().strip())
+        f.close()
         return

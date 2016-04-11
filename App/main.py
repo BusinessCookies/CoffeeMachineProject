@@ -106,6 +106,7 @@ class UpdatedLabel (Label):
         try:
             f=open(self.pathToFile, 'r')
             self.text=f.read()
+            f.close()
         except:
             print 'Cannot open this file'
         Clock.schedule_interval(self.callback,60)
@@ -113,6 +114,8 @@ class UpdatedLabel (Label):
         try:
             f=open(self.pathToFile, 'r')
             self.text=f.read()
+            f.close()
+
         except:
             print 'Cannot open this file'
 
@@ -152,7 +155,7 @@ class WelcomeScreen(Screen):
             if(PinEnterred.val == '00000'):
                 quitApp.bool = True
                 self.manager.current = "US"
-                print "\n\n1nd \n\n"#, quit_app
+                #print "\n\n1nd \n\n"#, quit_app
             else:
                 quitApp.bool = False
             if(PinEnterred.val == '02468' and UD.bool == True):
@@ -178,7 +181,7 @@ class WelcomeScreen(Screen):
                     print currentuser.monney
                     if float(currentuser.monney) < -10.0:
                         if currentuser.admin == False:
-                            print "coucou"
+                            #print "coucou"
                             self.manager.current='FS'
                             return
                     for row1 in mycoffeelist.Mycoffee:
@@ -190,7 +193,7 @@ class WelcomeScreen(Screen):
                     mycoffeelist.setDefaultuser(currentuser)
                     currentuser.beans='3'
                     currentuser.water='180'
-                    print currentuser.monney
+                    #print currentuser.monney
                     self.manager.current='CCS'
                     return
             self.manager.current='US'
@@ -200,7 +203,7 @@ class WelcomeScreen(Screen):
     def do_action(self,digit):
         global PinEnterred
         if digit == "update":
-			thread.start_new_thread(subprocess.call, (["sudo","sh", "/kivy/CoffeeMProject/PinLoginVersion/update_network.sh"],))
+			self.manager.current='UpS'
 			return
         elif len(PinEnterred.val)<5:
             if len(PinEnterred.val)<5:
@@ -263,6 +266,27 @@ class DankeScreen2(Screen):
         currentuser.DelCurrentUser()
         self.manager.current='WS'
 
+
+class UpdateScreen(Screen):
+    def __init__(self, **kwargs):
+        Screen.__init__(self, **kwargs)
+    def on_enter(self):
+        Clock.schedule_once(self.callback, 15)
+    def callback(self):
+        if self.manager.current='UpS':
+            self.manager.current='WS'
+
+class WaitUpdateScreen(Screen):
+    def __init(self, **kwargs):
+        Screen.__init__(self, **kwargs)
+    def on_enter(self):
+        thread.start_new_thread(subprocess.call, (["sudo","sh", "/kivy/CoffeeMProject/PinLoginVersion/update_network.sh"],))
+        Clock.schedule_once(self.callback, 10)
+    def callback(self, dt):
+        self.manager.current='WS'
+
+
+
 class ChooseCoffeeScreen(Screen):
     def __init__(self, **kwargs):
         Screen.__init__(self, **kwargs)
@@ -288,7 +312,7 @@ class ChooseCoffeeScreen(Screen):
         global Normalcoffee
         global currentuser
         if str(ButtonPressed)=="setupB":
-            print '\n\n',currentuser.admin, '\n\n' 
+            #print '\n\n',currentuser.admin, '\n\n' 
             if currentuser.admin==True:
                 self.manager.current="CCAS"
         if str(ButtonPressed)=="Expresso":
@@ -411,6 +435,8 @@ class CoffeeMachineApp(App):
         sm.add_widget(DankeScreen(name='DS'))
         sm.add_widget(DankeScreen2(name='DS2'))
         sm.add_widget(ForbiddenScreen(name='FS'))
+        sm.add_widget(UpdateScreen(name='UpS'))
+        sm.add_widget(WaitUpdateScreen(name='WUpS'))
         #Launch the app
         return sm
         

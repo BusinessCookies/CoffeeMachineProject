@@ -13,7 +13,18 @@ use AppBundle\Form\DataType;
 class RaspiController extends Controller
 {
 
-
+    /**
+     * @Route("/raspi/getMinMoney", name="raspi_get_min_money")
+		 * @Method({"GET"})
+     */
+		public function getMinMoney(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $repository = $em->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("MinMoney");
+      return new Response(trim($data->GetData()));
+    }
+    
     /**
      * @Route("/raspi/getExpPrice", name="raspi_get_exp_price")
 		 * @Method({"GET"})
@@ -85,8 +96,15 @@ class RaspiController extends Controller
       
       // Update Admin Data
       $admindata = $repository->findOneByFile("Admin");
-      $csvadmin = $this->parseCSV($admindata->GetData(), ";", "\n");
+      $csvadmin = $this->parseCSV(trim($admindata->GetData()), ";", "\n");
       $csvdate = $this->parseCSV($addedData, ";", "\n");
+      
+      // Get Norm and Exp Prices
+      $normCoffee = $repository->findOneByFile("NormCoffee");
+      $expCoffee = $repository->findOneByFile("ExpCoffee");
+      $normPrice = floatval( trim($normCoffee->GetData()));
+      $expPrice = floatval( trim($expCoffee->GetData()));
+      
       foreach($csvdate as $eda)
       {
         foreach($csvadmin as &$ead)
@@ -94,7 +112,7 @@ class RaspiController extends Controller
           if( $eda[1] === $ead[0])
           {
 						$actualmoney = floatval($ead[2]);
-						$toremove = ($actualmoney<0)*0.40 + ($actualmoney>=0)*0.25;
+						$toremove = ($actualmoney<0)*$expPrice + ($actualmoney>=0)*$normPrice;
             $ead[2] = number_format($actualmoney - $toremove,2,'.','');
             // Update traceback
             $date = new DateTime();

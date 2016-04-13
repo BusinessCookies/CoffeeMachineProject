@@ -1,0 +1,29 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}
+Add Date Data Removing 0.25 cent to each user- {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+<h3>Add Date Data Removing 0.25 cent to each user</h3>
+
+
+<div class="well">
+
+  {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.data) }}
+        {{ form_errors(form.data) }}
+        {{ form_widget(form.data, {'attr': {'class': 'form-control', 'rows': '15'}}) }}
+    </div>
+
+{{ form_end(form) }}
+
+</div>
+
+{% endblock %}
+
+

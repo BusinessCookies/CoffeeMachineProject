@@ -16,6 +16,38 @@ use \DateTime;
 class AdminController extends Controller
 {
     /**
+     * @Route("/admin/getMinMoney", name="admin_getminmoney")
+     */
+    public function getMinMoney(Request $request)
+    {
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("MinMoney");
+      if (null === $data) {
+        throw new NotFoundHttpException("Could not find the file MinMoney");
+      }
+      return $this->render('AppBundle:Admin:getData.html.twig', array('datatype' => "MinMoney", 'data' => $data->GetData()));
+    }
+    
+    /**
+     * @Route("/admin/modifyMinMoney", name="admin_modifyminmoney")
+     */
+    public function modifyMinMoney(Request $request)
+    {
+	  $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("MinMoney");
+      $form = $this->get('form.factory')->create(new DataType(), $data);
+      if ($form->handleRequest($request)->isValid()) {
+        // Update Date Data
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Valid');
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:modifyData.html.twig', array('datatype' => "MinMoney", 'form' => $form->createView()));
+    }
+    
+    /**
      * @Route("/admin/getUpdatedLabel", name="admin_getupdatedlabel")
      */
     public function getUpdatedLabel(Request $request)
@@ -111,39 +143,7 @@ class AdminController extends Controller
       return $this->render('AppBundle:Admin:modifyData.html.twig', array('datatype' => "ExpCoffee", 'form' => $form->createView()));
     }
 
-	/**
-     * @Route("/admin/normalizeData", name="admin_normlizedata")
-     */
-    public function normalizeData(Request $request)
-    {
-		$repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
-		$admindata = $repository->findOneByFile("Admin");
-		$datedata = $repository->findOneByFile("Date");
-		$em = $this->getDoctrine()->getManager();
-		$csvadmin = $this->parseCSV($admindata->GetData(), ";", "\n");
-		$csvdate = $this->parseCSV($datedata->GetData(), ";", "\n");
-		foreach($csvadmin as &$ead)
-		{
-			if(strtolower($ead[0]) != $ead[0])
-			{
-				$ead[0] = strtolower($ead[0]);
-			  	foreach($csvdate as $eda)
-        		{
-					if($eda[1] === $ead[0])
-            		{
-						$actualmoney = floatval($ead[2]);
-						$toremove = ($actualmoney<=0)*0.40 + ($actualmoney>0)*0.25;
-						$ead[2] = number_format($actualmoney - $toremove,2,'.','');
-					}
-				}
-			}
-		}
-		$admindata->SetData($this->unparseCSV($csvadmin, ";", "\n"));
-		$em->persist($admindata);
-		$em->flush();
-		return $this->render('AppBundle:Admin:normalizeData.html.twig', array());
-    }
-
+	
 	/**
      * @Route("/admin/modifyAdminData", name="admin_modifyadmindata")
      */
@@ -170,7 +170,7 @@ class AdminController extends Controller
       return $this->render('AppBundle:Admin:modifyAdminData.html.twig', array('form' => $form->createView()));
     }
 
-	/**
+	  /**
      * @Route("/admin/modifyDateData", name="admin_modifydatedata")
      */
     public function modifyDateData(Request $request)
@@ -284,6 +284,65 @@ class AdminController extends Controller
         return $this->redirect($this->generateUrl('index'));
       }
       return $this->render('AppBundle:Admin:addMoney.html.twig', array('form' => $form->createView()));
+    }
+    
+    /**
+     * @Route("/admin/addDate25", name="admin_adddate25")
+     */
+    public function addDate25(Request $request)
+    {
+      // Create empty Date
+      $em = $this->getDoctrine()->getManager();
+	    $repository = $em->getRepository('AppBundle:Data');
+      $data = new Data();
+      $form = $this->get('form.factory')->create(new DataType(), $data);
+      // If for has been send, update empty Date with the formular's data
+      if ($form->handleRequest($request)->isValid()) {
+        // Update current date
+        $addedData = trim($data->GetData());
+        $datedata = $repository->findOneByFile("Date");
+        $newData = $datedata->GetData();
+        $newData = trim($newData);
+        $newData = $newData."\n".$addedData;
+        $datedata->SetData($newData);
+        $em->persist($datedata);
+        
+        // Update Admin Data
+        $admindata = $repository->findOneByFile("Admin");
+        $csvadmin = $this->parseCSV(trim($admindata->GetData()), ";", "\n");
+        $csvdate = $this->parseCSV($addedData, ";", "\n");
+        
+        // Get Traceback
+        $tracedata = $repository->findOneByFile("Traceback");
+        $newtraceData = $tracedata->GetData();
+        $newtraceData = trim($newtraceData);
+      
+        foreach($csvdate as $eda)
+        {
+          foreach($csvadmin as &$ead)
+          {
+            if( $eda[1] === $ead[0])
+            {
+						  $actualmoney = floatval($ead[2]);
+						  $toremove = 0.25;
+              $ead[2] = number_format($actualmoney - $toremove,2,'.','');
+              // Update traceback
+              $date = new DateTime();
+              $addstring = $ead[0].";".$date->format('YmdHis').";".$eda[0].";".number_format(-1*$toremove,2,'.','').";".$ead[2];
+              $newtraceData = $newtraceData."\n".$addstring;
+            }
+          }
+        }
+        $tracedata->SetData($newtraceData); 
+        $em->persist($tracedata);
+        
+        $admindata->SetData($this->unparseCSV($csvadmin, ";", "\n"));
+        $em->persist($admindata);
+        $em->flush();
+      
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:addDate25.html.twig', array('form' => $form->createView()));
     }
     
     

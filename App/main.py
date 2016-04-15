@@ -33,8 +33,6 @@ mycoffeelist = CSV.MycoffeeList()
 Normalcoffee=OtherClasses.CoffeePriceClass("Normal")
 ExpCoffee = OtherClasses.CoffeePriceClass("Expensive")
 MinMonney = OtherClasses.CoffeePriceClass("MinMonney")
-
-
 NumberOfDigitEntered=0
 path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/"
 NumberOfDigitEntered=0
@@ -122,6 +120,25 @@ class UpdatedLabel (Label):
         except:
             print 'Cannot open this file'
 
+class UpdatedLabelQuestionnaire (Label):
+    def __init__(self, **kwargs):
+        Label.__init__(self, **kwargs)
+        global path
+        self.pathToFile = path + "updated_label_Questionnaire.txt" 
+        try:
+            f=open(self.pathToFile, 'r')
+            self.text=f.read()
+            f.close()
+        except:
+            print 'Cannot open this file'
+        Clock.schedule_interval(self.callback,60)
+    def callback(self, dt):
+        try:
+            f=open(self.pathToFile, 'r')
+            self.text=f.read()
+            f.close()
+        except:
+            print 'Cannot open this file'
 
 
 ################# Used for both Choose coffee and wlcome screen ##########################            
@@ -206,8 +223,8 @@ class WelcomeScreen(Screen):
     def do_action(self,digit):
         global PinEnterred
         if digit == "update":
-			self.manager.current='UpS'
-			return
+	    self.manager.current='UpS'
+	    return
         elif len(PinEnterred.val)<5:
             if len(PinEnterred.val)<5:
                 if digit=='del':
@@ -275,8 +292,8 @@ class UpdateScreen(Screen):
         Screen.__init__(self, **kwargs)
     def on_enter(self):
         Clock.schedule_once(self.callback, 15)
-    def callback(self):
-        if self.manager.current='UpS':
+    def callback(self, dt):
+        if self.manager.current=='UpS':
             self.manager.current='WS'
 
 class WaitUpdateScreen(Screen):

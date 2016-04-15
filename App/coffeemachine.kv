@@ -117,23 +117,25 @@
             size: self.size
     Image:
         source:'Data/Img/Background.jpg'
-    Label:
-        markup: True
-        text:'[color=#ff0000]Do you want to\n update databases\nOn the coffee machine? \n [/color]'
-        font_size:35
-        halign:'center'
-    GridLayout:
-        cols:2
-        padding:40
-        spacing:40
-        Button:
-            text: 'Yes'
-            on_press: root.do_action('Yes',0,0)
-            on_release: app.root.current='UIPS'
-        Button:
-            text:'No'
-            on_press: app.root.current='WS'
-            
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            markup: True
+            text:'[color=#ff0000]Do you want to\n update databases\nOn the coffee machine? \n [/color]'
+            font_size:35
+            halign:'center'
+        GridLayout:
+            cols:2
+            padding:80
+            spacing:80
+            Button:
+                text: 'Yes'
+                on_release: app.root.current='WUpS'
+                size_hint_y:0.2
+            Button:
+                text:'No'
+                on_press: app.root.current='WS'
+                size_hint_y:0.2
 <WaitUpdateScreen>
     name:'WUpS'
     Image:
@@ -345,8 +347,8 @@
             source:'Data/Img/coffeethanks.jpg'
         BoxLayout:
             orientation: 'vertical'
-            Label:
-                text: '[b]Please answer:\nHow clean is the machine?[/b]'
+            UpdatedLabelQuestionnaire:
+                text: self.text
                 font_size: 35
                 halign:'center'
                 markup:True

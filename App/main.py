@@ -19,7 +19,7 @@ import CSV
 import subprocess
 import OtherClasses
 import FoncGPIO as gpio
-
+import usefull_methods
 ######################## Global Variables #########################
 
 PinEnterred = OtherClasses.Pin()
@@ -37,7 +37,8 @@ NumberOfDigitEntered=0
 path = "/kivy/CoffeeMProject/PinLoginVersion/Data/DB/"
 NumberOfDigitEntered=0
 
-
+WelcomeQuestionnaireIsEmpty=True
+DankeQuestionnaireIsEmpty=True
 
 
 #################################################################
@@ -120,11 +121,42 @@ class UpdatedLabel (Label):
         except:
             print 'Cannot open this file'
 
-class UpdatedLabelQuestionnaire (Label):
+class UpdatedLabelQuestionnaireDanke (Label):
     def __init__(self, **kwargs):
         Label.__init__(self, **kwargs)
         global path
-        self.pathToFile = path + "updated_label_Questionnaire.txt" 
+        global DankeQuestionnaireIsEmpty
+        self.pathToFile = path + "updated_label_Questionnaire_danke.txt" 
+        try:
+            f=open(self.pathToFile, 'r')
+            self.text=f.read()
+            f.close()
+            if self.text != '':
+                DankeQuestionnaireIsEmpty = False
+            else:
+                DankeQuestionnaireIsEmpty = True
+        except:
+            print 'Cannot open this file'
+        Clock.schedule_interval(self.callback,60)
+    def callback(self, dt):
+        global DankeQuestionnaireIsEmpty
+        try:
+            f=open(self.pathToFile, 'r')
+            self.text=f.read()
+            f.close()
+            if self.text != '':
+                DankeQuestionnaireIsEmpty = False
+            else:
+                DankeQuestionnaireIsEmpty = True
+        except:
+            print 'Cannot open this file'
+
+class UpdatedLabelQuestionnaireWelcome (Label):
+    def __init__(self, **kwargs):
+        Label.__init__(self, **kwargs)
+        global path
+        global WelcomeQuestionnaireIsEmpty
+        self.pathToFile = path + "updated_label_Questionnaire_welcome.txt" 
         try:
             f=open(self.pathToFile, 'r')
             self.text=f.read()
@@ -133,10 +165,15 @@ class UpdatedLabelQuestionnaire (Label):
             print 'Cannot open this file'
         Clock.schedule_interval(self.callback,60)
     def callback(self, dt):
+        global WelcomeQuestionnaireIsEmpty
         try:
             f=open(self.pathToFile, 'r')
             self.text=f.read()
             f.close()
+            if text != '':
+                WelcomeQuestionnaireIsEmpty = False
+            else:
+                WelcomeQuestionnaireIsEmpty = True
         except:
             print 'Cannot open this file'
 
@@ -168,6 +205,7 @@ class WelcomeScreen(Screen):
         global UD
         global Users
         global mycoffeelist
+        global WelcomeQuestionnaireIsEmpty
         if len(PinEnterred.val)==5:
             if(PinEnterred.val == '13579' and quitApp.bool == True):
                 App.get_running_app().stop()
@@ -201,20 +239,23 @@ class WelcomeScreen(Screen):
                     print currentuser.monney
                     if float(currentuser.monney) < MinMonney.val:
                         if currentuser.admin == False:
-                            #print "coucou"
                             self.manager.current='FS'
                             return
                     for row1 in mycoffeelist.Mycoffee:
                         if currentuser.UID == row1[0]:
                             currentuser.beans=row1[1]
                             currentuser.water=row1[2]
-                            self.manager.current='CCS'
+                            if WelcomeQuestionnaireIsEmpty == True:
+                                self.manager.current='CCS'
+                            else:
+                                self.manager.current='WQS'
                             return
                     mycoffeelist.setDefaultuser(currentuser)
                     currentuser.beans='3'
                     currentuser.water='180'
-                    #print currentuser.monney
-                    self.manager.current='CCS'
+                    if WelcomeQuestionnaireIsEmpty == True:
+                        self.manager.current='CCS'
+                    else self.manager.current='WQS'
                     return
             self.manager.current='US'
         else:
@@ -233,14 +274,41 @@ class WelcomeScreen(Screen):
                 else:
                     PinEnterred.AddDigit(str(digit))
             
-        
+class WelcomeQuestionnaireScreen(Screen):
+    def __init__(self, **kwargs):
+        Screen.__init__(self, **kwargs)
+    def on_enter(self):
+        Clock.schedule_once(self.callback, 5)
+    def callback(self,dt):
+        if self.manager.current == 'WQS':
+            self.manager.current='CCS'
+        else:
+            pass
+    def do_action(self, answer_questionnaire):
+        global currentuser
+        if answer_questionnaire=="Bad":
+            grade=0
+        elif answer_questionnaire=="Medium":
+            grade=1
+        else:
+            grade=2
+            
+            
+            
+            ####### TODO get last coffee drunk by user for date instead of current one ##############
+            
+        PreviousCoffeeDate = usefull_methods.FindLastDate(currentuser.UID)    
+        usergrade = CSV.Grade2([PreviousCoffeeDate, currentuser.UID,str(grade)])
+        usergrade.WriteInCSV()
+        self.manager.current='CCS'   
+    
 class UnregisteredScreen(Screen):
     def __init__(self, **kwargs):
         Screen.__init__(self, **kwargs)
     def on_enter(self):
         global PinEnterred
         PinEnterred.DelPin()
-        Clock.schedule_once(self.callback, 5)        
+        Clock.schedule_once(self.callback, 5)
     def callback(self,dt):
         self.manager.current='WS'
 
@@ -331,6 +399,7 @@ class ChooseCoffeeScreen(Screen):
         global Expcoffee
         global Normalcoffee
         global currentuser
+        global DankeQuestionnaireIsEmpty
         if str(ButtonPressed)=="setupB":
             #print '\n\n',currentuser.admin, '\n\n' 
             if currentuser.admin==True:
@@ -392,7 +461,6 @@ class ChooseCoffeeScreen(Screen):
                 price=Normalcoffee.val
             Users.SetUser([currentuser.UID,ad, str(float(currentuser.monney)-price), currentuser.pin])
         if str(ButtonPressed)=="My Coffee":
-            #print "\n\nHey I'm making a My Coffee with ", beans, "/4 beans and ", water, "mL of water"
             currentuser.beans=beans
             currentuser.water=water
             gpio.DoMyCoffee(beans, water)
@@ -409,6 +477,10 @@ class ChooseCoffeeScreen(Screen):
             else:
                 price=Normalcoffee.val
             Users.SetUser([currentuser.UID,ad, str(float(currentuser.monney)-price), currentuser.pin])
+        if DankeQuestionnaireIsEmpty == True:
+            self.manager.current = 'DS2'
+        else:
+            self.manager.current = 'DS'
 
 class ChooseCoffeeAdminScreen(Screen):
     def exit(self):
@@ -449,6 +521,7 @@ class CoffeeMachineApp(App):
     def build(self):
         sm=ScreenManager(transition=WipeTransition())
         sm.add_widget(WelcomeScreen(name='WS'))
+        sm.add_widget(WelcomeQuestionnaireScreen(name="WQS"))
         sm.add_widget(UnregisteredScreen(name='US'))
         sm.add_widget(ChooseCoffeeScreen(name='CCS'))
         sm.add_widget(ChooseCoffeeAdminScreen(name='CCAS'))

@@ -48,7 +48,7 @@ class Pin:
             
 class UpdateDB():
     def __init__(self, **kwargs):
-        Clock.schedule_interval(self.callback,1200)
+        Clock.schedule_interval(self.callback,600)
     def callback(self,dt):
         thread.start_new_thread(subprocess.call, (["sudo","/bin/bash", "/kivy/CoffeeMProject/PinLoginVersion/update_network.sh"],))
    

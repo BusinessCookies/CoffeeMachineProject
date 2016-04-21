@@ -73,6 +73,41 @@
                     text: "Del"
                     on_press: root.do_action("del")
 
+<WelcomeQuestionnaireScreen>:
+    name:'WQS'
+    canvas.before:
+        Color:
+            rgba: (0.4,0.45,0.5,0.1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Image:
+        source:'Data/Img/Background.jpg'   
+    BoxLayout:
+        orientation: 'vertical'
+        Image:
+            source:'Data/Img/CoffeeEquation.jpg'
+        BoxLayout:
+            orientation: 'vertical'
+            UpdatedLabelQuestionnaireWelcome:
+                text: self.text
+                font_size: 35
+                halign:'center'
+                markup:True
+            BoxLayout:
+                orientation: 'horizontal'
+                ImageButton:
+                    source: 'Data/Img/Unhappy.png'
+                    on_press: root.do_action("Bad")
+                    on_release: app.root.current='CCS'
+                ImageButton:
+                    source: 'Data/Img/Medium.png'
+                    on_press: root.do_action("Medium")
+                    on_release: app.root.current='CCS'
+                ImageButton:
+                    source: 'Data/Img/Happy.png'
+                    on_press: root.do_action("Good")
+                    on_release: app.root.current='CCS'
                     
 <UnregisteredScreen>
     name:'US'
@@ -117,23 +152,25 @@
             size: self.size
     Image:
         source:'Data/Img/Background.jpg'
-    Label:
-        markup: True
-        text:'[color=#ff0000]Do you want to\n update databases\nOn the coffee machine? \n [/color]'
-        font_size:35
-        halign:'center'
-    GridLayout:
-        cols:2
-        padding:40
-        spacing:40
-        Button:
-            text: 'Yes'
-            on_press: root.do_action('Yes',0,0)
-            on_release: app.root.current='UIPS'
-        Button:
-            text:'No'
-            on_press: app.root.current='WS'
-            
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            markup: True
+            text:'[color=#ff0000]Do you want to\n update databases\nOn the coffee machine? \n [/color]'
+            font_size:35
+            halign:'center'
+        GridLayout:
+            cols:2
+            padding:80
+            spacing:80
+            Button:
+                text: 'Yes'
+                on_release: app.root.current='WUpS'
+                size_hint_y:0.2
+            Button:
+                text:'No'
+                on_press: app.root.current='WS'
+                size_hint_y:0.2
 <WaitUpdateScreen>
     name:'WUpS'
     Image:
@@ -173,21 +210,21 @@
             Button:
                 text: 'Expresso'
                 on_press: root.do_action('Expresso',0,0)
-                on_release: app.root.current='DS'
+                #on_release: app.root.current='DS'
             Button: 
                 text: 'Double Expresso'
                 on_press: root.do_action('Double Expresso',0,0)
-                on_release: app.root.current='DS'
+                #on_release: app.root.current='DS'
                 #size_hint_y: 1
             Button: 
                 text: 'Coffee'
                 on_press: root.do_action('Coffee',0,0)
-                on_release: app.root.current='DS'
+                #on_release: app.root.current='DS'
                 #size_hint_y: 1
             Button: 
                 text: 'Double Coffee'
                 on_press: root.do_action('Double Coffee',0,0)
-                on_release: app.root.current='DS'
+                #on_release: app.root.current='DS'
         Monney:
             pos_hint:{'x':0,'top':0.6}
             size_hint_y:0.2
@@ -244,7 +281,7 @@
                 #size_hint_y:0.3
                 pos_hint:{'x':0.3, 'y':0}
                 on_press: root.do_action('My Coffee',slider_beans.value,slider_quantity.value)
-                on_release: app.root.current='DS'
+                #on_release: app.root.current='DS'
 
 <ChooseCoffeeAdminScreen>:
     name: 'CCAS'
@@ -345,8 +382,8 @@
             source:'Data/Img/coffeethanks.jpg'
         BoxLayout:
             orientation: 'vertical'
-            Label:
-                text: '[b]Please answer:\nHow clean is the machine?[/b]'
+            UpdatedLabelQuestionnaire:
+                text: self.text
                 font_size: 35
                 halign:'center'
                 markup:True

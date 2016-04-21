@@ -15,6 +15,71 @@ use \DateTime;
 
 class AdminController extends Controller
 {
+      
+    /**
+     * @Route("/admin/getQuestionnaireDanke", name="admin_getquestionnairedanke")
+     */
+    public function getQuestionnaireDanke(Request $request)
+    {
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("QuestionnaireDanke");
+      if (null === $data) {
+        throw new NotFoundHttpException("Could not find the file QuestionnaireDanke");
+      }
+      return $this->render('AppBundle:Admin:getData.html.twig', array('datatype' => "QuestionnaireDanke", 'data' => $data->GetData()));
+    }
+    
+    /**
+     * @Route("/admin/modifyQuestionnaireDanke", name="admin_modifyquestionnairedanke")
+     */
+    public function modifyQuestionnaireDanke(Request $request)
+    {
+	  $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("QuestionnaireDanke");
+      $form = $this->get('form.factory')->create(new DataType(), $data);
+      if ($form->handleRequest($request)->isValid()) {
+        // Update Date Data
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Valid');
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:modifyData.html.twig', array('datatype' => "QuestionnaireDanke", 'form' => $form->createView()));
+    }    
+    
+    /**
+     * @Route("/admin/getQuestionnaireWelcome", name="admin_getquestionnairewelcome")
+     */
+    public function getQuestionnaireWelcome(Request $request)
+    {
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("QuestionnaireWelcome");
+      if (null === $data) {
+        throw new NotFoundHttpException("Could not find the file QuestionnaireWelcome");
+      }
+      return $this->render('AppBundle:Admin:getData.html.twig', array('datatype' => "QuestionnaireWelcome", 'data' => $data->GetData()));
+    }
+    
+    /**
+     * @Route("/admin/modifyQuestionnaireWelcome", name="admin_modifyquestionnairewelcome")
+     */
+    public function modifyQuestionnaireWelcome(Request $request)
+    {
+	  $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("QuestionnaireWelcome");
+      $form = $this->get('form.factory')->create(new DataType(), $data);
+      if ($form->handleRequest($request)->isValid()) {
+        // Update Date Data
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Valid');
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:modifyData.html.twig', array('datatype' => "QuestionnaireWelcome", 'form' => $form->createView()));
+    }    
+    
     /**
      * @Route("/admin/getMinMoney", name="admin_getminmoney")
      */

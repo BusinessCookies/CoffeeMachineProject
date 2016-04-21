@@ -61,6 +61,30 @@ class RaspiController extends Controller
       return new Response(trim($data->GetData()));
     }
     
+    /**
+     * @Route("/raspi/getQuestionnaireDanke", name="raspi_get_questionnaire_danke")
+		 * @Method({"GET"})
+     */
+		public function getQuestionnaireDanke(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $repository = $em->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("QuestionnaireDanke");
+      return new Response(trim($data->GetData()));
+    }
+    
+    /**
+     * @Route("/raspi/getQuestionnaireWelcome", name="raspi_get_questionnaire_welcome")
+		 * @Method({"GET"})
+     */
+		public function getQuestionnaireWelcome(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $repository = $em->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("QuestionnaireWelcome");
+      return new Response(trim($data->GetData()));
+    }
+    
 		/**
      * @Route("/raspi/update", name="raspi_update")
 		 * @Method({"POST"})

@@ -13,7 +13,7 @@ class CreateFiles implements FixtureInterface
     public function load(ObjectManager $manager)
     {
 			// Create needed file if don't exist
-      $types = ['Date', 'Admin', 'Traceback', 'Connections', 'ExpCoffee', 'NormCoffee', 'UpdatedLabel', 'MinMoney'];
+      $types = ['Date', 'Admin', 'Traceback', 'Connections', 'ExpCoffee', 'NormCoffee', 'UpdatedLabel', 'MinMoney', 'QuestionnaireDanke', 'QuestionnaireWelcome'];
       $repository = $manager->getRepository('AppBundle:Data');
       foreach($types as $type)
       {

@@ -62,6 +62,34 @@ class AdminController extends Controller
     }
     
     /**
+     * @Route("/admin/getGrade", name="admin_getgrade")
+     */
+    public function getGrade(Request $request)
+    {
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("Grade");
+      if (null === $data) {
+        throw new NotFoundHttpException("Could not find the file Grade");
+      }
+      return $this->render('AppBundle:Admin:getData.html.twig', array('datatype' => "Grade", 'data' => $data->GetData()));
+    }
+    
+    /**
+     * @Route("/admin/getGrade2", name="admin_getgrade2")
+     */
+    public function getGrade2(Request $request)
+    {
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("Grade2");
+      if (null === $data) {
+        throw new NotFoundHttpException("Could not find the file Grade2");
+      }
+      return $this->render('AppBundle:Admin:getData.html.twig', array('datatype' => "Grade2", 'data' => $data->GetData()));
+    }
+    
+    
+    
+    /**
      * @Route("/admin/modifyQuestionnaireWelcome", name="admin_modifyquestionnairewelcome")
      */
     public function modifyQuestionnaireWelcome(Request $request)

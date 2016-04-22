@@ -85,6 +85,50 @@ class RaspiController extends Controller
       return new Response(trim($data->GetData()));
     }
     
+    /**
+     * @Route("/raspi/grade", name="raspi_grade")
+		 * @Method({"POST"})
+     */
+		public function grade(Request $request)
+    {
+      // Get repositories
+      $em = $this->getDoctrine()->getManager();
+      $repository = $em->getRepository('AppBundle:Data');
+      
+      // Get the posted data and remove everything outside csv
+			$addedData = $request->request->get('grade');
+			$addedData = trim($addedData);
+			
+      // Register the connection
+      $gradedata = $repository->findOneByFile("Grade");
+      $gradedata->SetData(trim($gradedata->GetData())."\n".$addedData);
+      $em->persist($gradedata);
+      $em->flush();
+      return new Response("Valid");
+    }
+    
+    /**
+     * @Route("/raspi/grade2", name="raspi_grade2")
+		 * @Method({"POST"})
+     */
+		public function grade2(Request $request)
+    {
+      // Get repositories
+      $em = $this->getDoctrine()->getManager();
+      $repository = $em->getRepository('AppBundle:Data');
+      
+      // Get the posted data and remove everything outside csv
+			$addedData = $request->request->get('grade2');
+			$addedData = trim($addedData);
+			
+      // Register the connection
+      $gradedata = $repository->findOneByFile("Grade2");
+      $gradedata->SetData(trim($gradedata->GetData())."\n".$addedData);
+      $em->persist($gradedata);
+      $em->flush();
+      return new Response("Valid");
+    }
+    
 		/**
      * @Route("/raspi/update", name="raspi_update")
 		 * @Method({"POST"})

@@ -29,9 +29,9 @@ def updateData(csv_date, csv_grade, csv_grade2):
         csrf = html.find('input', {'name': '_csrf_token'}).get('value')
         payload = {
             '_csrf_token': csrf,
-            '_password': 'raspi',
+            '_password': 'password',
             '_submit': 'Anmelden',
-            '_username': 'password'
+            '_username': 'username'
         }
         r = s.post(url+'/login_check', data=payload)
         # UPDATE

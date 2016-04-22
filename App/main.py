@@ -178,7 +178,7 @@ class UpdatedLabelQuestionnaireWelcome (Label):
             print 'Cannot open this file'
 
 
-################# Used for both Choose coffee and wlcome screen ##########################            
+################# Used ForbiddenScreense coffee and wlcome screen ##########################            
 class Easyclock(Label): 
     def __init__(self, **kwargs):
         Label.__init__(self, **kwargs)
@@ -247,15 +247,20 @@ class WelcomeScreen(Screen):
                             currentuser.water=row1[2]
                             if WelcomeQuestionnaireIsEmpty == True:
                                 self.manager.current='CCS'
+                                return
                             else:
                                 self.manager.current='WQS'
+                                return
                             return
                     mycoffeelist.setDefaultuser(currentuser)
                     currentuser.beans='3'
                     currentuser.water='180'
                     if WelcomeQuestionnaireIsEmpty == True:
                         self.manager.current='CCS'
-                    else self.manager.current='WQS'
+                        return
+                    else:
+                        self.manager.current='WQS'
+                        return
                     return
             self.manager.current='US'
         else:
@@ -292,11 +297,6 @@ class WelcomeQuestionnaireScreen(Screen):
             grade=1
         else:
             grade=2
-            
-            
-            
-            ####### TODO get last coffee drunk by user for date instead of current one ##############
-            
         PreviousCoffeeDate = usefull_methods.FindLastDate(currentuser.UID)    
         usergrade = CSV.Grade2([PreviousCoffeeDate, currentuser.UID,str(grade)])
         usergrade.WriteInCSV()

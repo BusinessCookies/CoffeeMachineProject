@@ -56,12 +56,11 @@ class Grade:
         CSVParser.AppendCSVToFile(localpath, [self.UserGrade])
 
 class Grade2:
-    def __init__(self, UserGrade, dateOfLastCoffee):
+    def __init__(self, UserGrade):
         self.UserGrade=UserGrade #contains list time;UID;grade (filled in main.py -do_action WelcomeQuestionnaireScreen-)
-
     def WriteInCSV(self):
         global path
-        localpath = path +"grade.csv"
+        localpath = path +"grade2.csv"
         CSVParser.AppendCSVToFile(localpath, [self.UserGrade])
 
 

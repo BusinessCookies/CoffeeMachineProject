@@ -17,6 +17,12 @@ class DeleteDoubleDate implements FixtureInterface
 			$admin_data = $repository->findOneByFile("Admin");
       $date_data = $repository->findOneByFile("Date");
       
+      // Get Norm and Exp Prices
+      $normCoffee = $repository->findOneByFile("NormCoffee");
+      $expCoffee = $repository->findOneByFile("ExpCoffee");
+      $normPrice = floatval( trim($normCoffee->GetData()));
+      $expPrice = floatval( trim($expCoffee->GetData()));
+      
       // Update the data, checking duplicate data:
 			// --> delete the Date line
 			// --> add 0.25 c to corresponding Admin 
@@ -35,7 +41,7 @@ class DeleteDoubleDate implements FixtureInterface
 					    if( $csv_date[$i][1] === $admin_line[0]) // if admin correspond to ID of the date
 					    {
 								$actualmoney = floatval($admin_line[2]); // get admin's current money
-								$toadd = 0.25; // add money depending on his current account state
+								$toadd = ($actualmoney<0)*$expPrice + ($actualmoney>=0)*$normPrice;
 					      $admin_line[2] = number_format($actualmoney + $toadd,2,'.',''); // replace admin's current money
 					    }
 					  }

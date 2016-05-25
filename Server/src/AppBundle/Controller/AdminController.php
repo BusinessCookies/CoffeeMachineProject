@@ -9,9 +9,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use AppBundle\Entity\Data;
 use AppBundle\Entity\AddMoney;
 use AppBundle\Form\AddMoneyType;
+use AppBundle\Entity\AddUser;
+use AppBundle\Form\AddUserType;
 use AppBundle\Form\DataType;
 use \DateTime;
-
+use ZipArchive;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
@@ -75,6 +80,25 @@ class AdminController extends Controller
     }
     
     /**
+     * @Route("/admin/modifyGrade", name="admin_modifygrade")
+     */
+    public function modifyGrade(Request $request)
+    {
+	  $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("Grade");
+      $form = $this->get('form.factory')->create(new DataType(), $data);
+      if ($form->handleRequest($request)->isValid()) {
+        // Update Date Data
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Valid');
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:modifyData.html.twig', array('datatype' => "Grade", 'form' => $form->createView()));
+    }    
+    
+    /**
      * @Route("/admin/getGrade2", name="admin_getgrade2")
      */
     public function getGrade2(Request $request)
@@ -86,6 +110,25 @@ class AdminController extends Controller
       }
       return $this->render('AppBundle:Admin:getData.html.twig', array('datatype' => "Grade2", 'data' => $data->GetData()));
     }
+    
+    /**
+     * @Route("/admin/modifyGrade2", name="admin_modifygrade2")
+     */
+    public function modifyGrade2(Request $request)
+    {
+	  $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $data = $repository->findOneByFile("Grade2");
+      $form = $this->get('form.factory')->create(new DataType(), $data);
+      if ($form->handleRequest($request)->isValid()) {
+        // Update Date Data
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Valid');
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:modifyData.html.twig', array('datatype' => "Grade2", 'form' => $form->createView()));
+    }    
     
     
     
@@ -379,6 +422,104 @@ class AdminController extends Controller
       return $this->render('AppBundle:Admin:addMoney.html.twig', array('form' => $form->createView()));
     }
     
+    
+    /**
+     * @Route("/admin/addUser", name="admin_adduser")
+     */
+    public function addUser(Request $request)
+    {
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+      $admindata = $repository->findOneByFile("Admin");        
+      $data = trim($admindata->GetData());
+      $addUser = new AddUser();
+      $addUser->SetUID( $this->generateRandomUid($data) );
+      $addUser->SetPin( $this->generateRandomPin($data) );
+      $addUser->SetAdmin( false );
+      $addUser->SetMoney( 0 ); 
+      // Generate default uID, pin, admin=false, money=0
+      $form = $this->get('form.factory')->create(new AddUserType(), $addUser);
+      if ($form->handleRequest($request)->isValid()) {
+        // Update Admin Data
+        $toAdd = $addUser->getUID().";";
+        if($addUser->getAdmin() == true)
+        {
+          $toAdd .= "ja;";
+        }else{
+          $toAdd .= "nein;";
+        }
+        $toAdd .= $addUser->getMoney().";";
+        $toAdd .= $addUser->getPin()."\n";
+        $data = $data."\n".$toAdd;
+        $admindata->SetData($data);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($admindata);
+        $em->flush();
+        // Update traceback
+        $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Data');
+        $tracedata = $repository->findOneByFile("Traceback");
+        $newData = $tracedata->GetData();
+        $newData = trim($newData);
+        $date = new DateTime();
+        $addstring = $addUser->GetUID().";".$date->format('YmdHis').";".$date->format('YmdHis').";".$addUser->GetMoney().";".$addUser->GetMoney();
+        $newData = $newData."\n".$addstring;
+        $tracedata->SetData($newData);
+        $em->persist($tracedata);
+        $em->flush();   
+        return $this->redirect($this->generateUrl('index'));
+      }
+      return $this->render('AppBundle:Admin:addUser.html.twig', array('form' => $form->createView()));
+    }
+    
+    /**
+     * @Route("/admin/downloadBackup", name="admin_downloadbackup")
+     */
+    public function downloadBackup(Request $request)
+    {
+      // Create csv file for each file
+      $types = ['Date', 'Admin', 'Traceback', 'Connections', 'ExpCoffee', 'NormCoffee', 'UpdatedLabel', 'MinMoney', 'QuestionnaireDanke', 'QuestionnaireWelcome', 'Grade', 'Grade2'];
+      $path = $this->get('kernel')->getRootDir()."/../web/downloads/toZip/";
+      $pathToZip = $this->get('kernel')->getRootDir()."/../web/downloads/";
+      $em = $this->getDoctrine()->getManager();
+	    $repository = $em->getRepository('AppBundle:Data');
+	    $files = array();
+	    $filesnames = array();
+      foreach($types as $type)
+      {
+        $data = $repository->findOneByFile($type);
+        $myfile = fopen($path.$type.".csv", "w") or die("Unable to open file!");
+        array_push($files,$path.$type.".csv");
+        array_push($filesnames,$type.".csv");
+        fwrite($myfile, trim($data->GetData()));
+        fclose($myfile);
+      }
+      // Zip the files
+      // Get real path for our folder
+      $rootPath = realpath($path);
+      // Initialize archive object
+      $zip = new ZipArchive();
+      $date = new DateTime();
+      $zipfile = 'backup('.$date->format('Y-m-d--H-i-s').').zip';
+      $zip->open($pathToZip.$zipfile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+      $i = 0;
+      foreach ($files as $file)
+      {
+          $zip->addFile($file, $filesnames[$i]);
+          $i++;
+      }
+      // Zip archive will be created only after closing object
+      $zip->close();
+
+      // Return zipped files
+      $content = file_get_contents($pathToZip.$zipfile);
+      $response = new Response();
+      //set headers
+      $response->headers->set('Content-Type', 'mime/type');
+      $response->headers->set('Content-Disposition', 'attachment;filename="'.$zipfile);
+      $response->setContent($content);
+      return $response;
+
+    }
+    
     /**
      * @Route("/admin/addDate25", name="admin_adddate25")
      */
@@ -438,6 +579,42 @@ class AdminController extends Controller
       return $this->render('AppBundle:Admin:addDate25.html.twig', array('form' => $form->createView()));
     }
     
+    
+    private function generateRandomUid($data)
+    {
+      $uid = "";
+      do
+      {
+        $characters = '0123456789abcdef';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 8; $i++)
+        {
+          $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        $uid = $randomString;
+      }
+      while(strpos($data, $uid ) !== false);
+      return $uid;
+    }
+    
+    private function generateRandomPin($data)
+    {
+      $pin = "";
+      do
+      {
+        $characters = '0123456789';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 5; $i++)
+        {
+          $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        $pin = $randomString;
+      }
+      while(strpos($data, $pin) !== false);
+      return $pin;
+    }
     
     private function parseCSV($CsvString, $delimiter, $stopper)
     {

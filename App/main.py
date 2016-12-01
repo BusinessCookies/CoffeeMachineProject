@@ -45,7 +45,6 @@ DankeQuestionnaireIsEmpty=True
 
 #################################################################
 
-########## Classes that overwrite Kivy native widgets ##########
 
 
 

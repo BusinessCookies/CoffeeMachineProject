@@ -15,11 +15,13 @@ from random import randint
 from kivy.properties import StringProperty
 from kivy.clock import Clock
 from kivy.uix.behaviors import ButtonBehavior
+
 import CSV
 import subprocess
 import OtherClasses
 import FoncGPIO as gpio
 import usefull_methods
+import Read as RFID
 ######################## Global Variables #########################
 
 PinEnterred = OtherClasses.Pin()
@@ -197,8 +199,51 @@ class WelcomeScreen(Screen):
         Screen.__init__(self, **kwargs)
     def on_enter(self):
         #print quit_app
-        Clock.schedule_once(self.callback, 1)                
-    def callback(self,dt):
+        Clock.schedule_once(self.callbackPinLogin, 1)
+        Clock.schedule_once(self.callbackRFIDLogin, 1)
+    def callbackRFIDLogin(self,dt):
+        UID=RFID.read()
+        if UID!='0':
+            global currentuser
+            #print '\n' + UID +'\n'
+            global Users
+            global mycoffeelist
+            Users.DelUserList()
+            Users.importFromCsvFile()
+            mycoffeelist.DelMycoffeeList()
+            mycoffeelist.importFromCsvFile()
+            #print Users.users
+            for row in Users.users:
+                #print '\n', row,'    ', UID, '\n' 
+                if UID == row[0].lower():
+                    currentuser.UID=UID
+                    if  row[1]=='ja':
+                        currentuser.admin=True
+                    else:
+                        currentuser.admin=False
+                    currentuser.monney=row[2]
+
+                    for row1 in mycoffeelist.Mycoffee:
+                        #print '\n', row1,'    ', UID, '\n' 
+                        if UID == row1[0]:
+                            currentuser.beans=row1[1]
+                            currentuser.water=row1[2]
+                            #print currentuser.UID, "  ",currentuser.admin,"  ",currentuser.beans, "  ",currentuser.water, "  ", currentuser.monney
+                            self.manager.current='second'
+                            return
+                    mycoffeelist.setDefaultuser(currentuser)
+                    currentuser.beans='3'
+                    currentuser.water=180
+                    #print "\n\n", currentuser.beans, "    ",currentuser.water, "\n\n"
+                    return
+            #if user is not in DB
+            self.manager.current='unregistered'
+        else:
+            Clock.schedule_once(self.callback, 1)
+            return
+
+
+    def callbackPinLogin(self,dt):
         global currentuser
         global PinEnterred
         global quitApp
